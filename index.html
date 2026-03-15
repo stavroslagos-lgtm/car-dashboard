@@ -8,15 +8,30 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
-
 <div id="speed">0 km/h</div>
 <div id="map"></div>
-<div id="controls">
-    <button class="big-btn">Χάρτης</button>
-    <button class="big-btn">Ραδιόφωνο</button>
-    <button class="big-btn">Μουσική</button>
-    <button class="big-btn">Ρυθμίσεις</button>
+    <div id="screen-map" class="screen active">
+    <div id="map"></div>
 </div>
+
+<div id="screen-radio" class="screen">
+    <h1>Ραδιόφωνο</h1>
+</div>
+
+<div id="screen-music" class="screen">
+    <h1>Μουσική</h1>
+</div>
+
+<div id="screen-settings" class="screen">
+    <h1>Ρυθμίσεις</h1>
+</div>
+<div id="controls">
+    <button class="big-btn" onclick="showScreen('map')">Χάρτης</button>
+    <button class="big-btn" onclick="showScreen('radio')">Ραδιόφωνο</button>
+    <button class="big-btn" onclick="showScreen('music')">Μουσική</button>
+    <button class="big-btn" onclick="showScreen('settings')">Ρυθμίσεις</button>
+</div>
+
 <script src="app.js"></script>
 </body>
 </html>
