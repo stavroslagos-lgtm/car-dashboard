@@ -41,3 +41,19 @@ body {
     background: #0f0;
     color: #000;
 }
+.screen {
+    display: none;
+    width: 100%;
+    height: calc(100vh - 120px); /* αφήνει χώρο για τα κουμπιά */
+    padding-top: 20px;
+    text-align: center;
+    color: #0f0;
+}
+
+.screen.active {
+    display: block;
+}
+
+#screen-radio, #screen-music, #screen-settings {
+    font-size: 32px;
+}
