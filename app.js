@@ -37,4 +37,11 @@ function(error) {
     enableHighAccuracy: true,
     maximumAge: 0
 });
+function showScreen(name) {
+    // Κρύβουμε όλες τις οθόνες
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+    // Εμφανίζουμε τη σωστή οθόνη
+    document.getElementById('screen-' + name).classList.add('active');
+}
 
