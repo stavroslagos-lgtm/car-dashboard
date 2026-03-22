@@ -215,3 +215,30 @@ function init() {
 }
 
 window.addEventListener('load', init);
+
+// Απλός έλεγχος Audio
+document.addEventListener('DOMContentLoaded', function() {
+    var debug = document.getElementById('debugText');
+    if (debug) debug.innerText = "App loaded. Click button to test audio.";
+    
+    // Δημιουργία κουμπιού δοκιμής αν δεν υπάρχει
+    if (!document.getElementById('testAudioBtn')) {
+        var testBtn = document.createElement('button');
+        testBtn.id = 'testAudioBtn';
+        testBtn.innerText = 'Test Audio (beep)';
+        testBtn.style.position = 'absolute';
+        testBtn.style.bottom = '80px';
+        testBtn.style.left = '10px';
+        testBtn.style.zIndex = '9999';
+        testBtn.onclick = function() {
+            var audio = new Audio();
+            audio.src = 'data:audio/wav;base64,U3RlYW0gZGF0YSBpcyBub3QgcmVhbCwgYnV0IHRoaXMgaXMgYSB0ZXN0Lg=='; // δεν είναι πραγματικό wav, αλλά θα δούμε αν προσπαθεί
+            audio.play().then(function() {
+                debug.innerText = "Audio played (but no sound, just test)";
+            }).catch(function(e) {
+                debug.innerText = "Audio error: " + e.message;
+            });
+        };
+        document.body.appendChild(testBtn);
+    }
+});
