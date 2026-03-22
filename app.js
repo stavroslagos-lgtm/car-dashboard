@@ -21,20 +21,15 @@ var marker = L.marker([35.3387, 25.1442]).addTo(map);
 navigator.geolocation.watchPosition(function(position) {
     updateSpeed(position);
 
-    var lat = position.coords.latitude;
-    var lon = position.coords.longitude;
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
 
-    // Μετακίνηση marker
     marker.setLatLng([lat, lon]);
-
-    // Follow mode
     map.setView([lat, lon]);
-}, 
-function(error) {
+
+}, function(error) {
     console.log("GPS error:", error);
-}, 
-{
-    enableHighAccuracy: true,
+}, {
     maximumAge: 0
 });
 
