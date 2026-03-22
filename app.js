@@ -130,118 +130,196 @@ let radioStations = [
     {
         freq: 88.1,
         name: "Fly FM",
-        url: "https://stream.radiojar.com/flyfm881",
-        logo: "logos/flyfm.png",
-        meta: "https://stream.radiojar.com/flyfm881/metadata"
+        url: "https://flyfm881.live24.gr/flyfm881",
+        logo: "https://www.live24.gr/wp-content/uploads/flyfm881-logo.png",
+        meta: null
     },
     {
         freq: 105.1,
         name: "Μουσικό Κανάλι",
-        url: "https://sh.onweb.gr:7086/stream",
-        logo: "logos/mousiko.png",
-        meta: "https://sh.onweb.gr:7086/status-json.xsl"
+        url: "https://mousikokanali1051.live24.gr/mousikokanali1051",
+        logo: "https://www.live24.gr/wp-content/uploads/mousikokanali-logo.png",
+        meta: null
     },
 
     // --- ΑΘΗΝΑ ---
     {
+        freq: 88.0,
+        name: "ΕΡΑ ΣΠΟΡ",
+        url: "https://erasport.live24.gr/erasport",
+        logo: "https://www.live24.gr/wp-content/uploads/eraspor-logo.png",
+        meta: null
+    },
+    {
         freq: 88.6,
         name: "Pepper 96.6",
-        url: "https://stream.radiojar.com/pepper",
-        logo: "logos/pepper.png",
-        meta: "https://stream.radiojar.com/pepper/metadata"
+        url: "https://pepper966.live24.gr/pepper966",
+        logo: "https://www.live24.gr/wp-content/uploads/pepper-logo.png",
+        meta: null
     },
     {
         freq: 89.2,
         name: "Sfera",
-        url: "https://sfera.live24.gr/sfera4132",
-        logo: "logos/sfera.png",
-        meta: "https://sfera.live24.gr/status-json.xsl"
+        url: "https://sfera892.live24.gr/sfera892",
+        logo: "https://www.live24.gr/wp-content/uploads/sfera-logo.png",
+        meta: null
+    },
+    {
+        freq: 89.8,
+        name: "Dromos FM",
+        url: "https://dromos898.live24.gr/dromos898",
+        logo: "https://www.live24.gr/wp-content/uploads/dromos-logo.png",
+        meta: null
+    },
+    {
+        freq: 90.1,
+        name: "ΕΡΑ ΠΡΩΤΟ",
+        url: "https://proto.live24.gr/proto",
+        logo: "https://www.live24.gr/wp-content/uploads/proto-logo.png",
+        meta: null
+    },
+    {
+        freq: 90.9,
+        name: "ΕΡΑ ΤΡΙΤΟ",
+        url: "https://trito.live24.gr/trito",
+        logo: "https://www.live24.gr/wp-content/uploads/trito-logo.png",
+        meta: null
     },
     {
         freq: 91.3,
         name: "Red FM",
-        url: "https://stream.radiojar.com/red",
-        logo: "logos/red.png",
-        meta: "https://stream.radiojar.com/red/metadata"
+        url: "https://red913.live24.gr/red913",
+        logo: "https://www.live24.gr/wp-content/uploads/red-logo.png",
+        meta: null
     },
     {
         freq: 92.3,
         name: "Λάμψη",
-        url: "https://stream.radiojar.com/lampsi",
-        logo: "logos/lampsi.png",
-        meta: "https://stream.radiojar.com/lampsi/metadata"
+        url: "https://lampsi923.live24.gr/lampsi923",
+        logo: "https://www.live24.gr/wp-content/uploads/lampsi-logo.png",
+        meta: null
+    },
+    {
+        freq: 92.6,
+        name: "Best 92.6",
+        url: "https://best926.live24.gr/best926",
+        logo: "https://www.live24.gr/wp-content/uploads/best-logo.png",
+        meta: null
     },
     {
         freq: 93.2,
         name: "Μελωδία",
-        url: "https://stream.radiojar.com/melodia",
-        logo: "logos/melodia.png",
-        meta: "https://stream.radiojar.com/melodia/metadata"
+        url: "https://melodia932.live24.gr/melodia932",
+        logo: "https://www.live24.gr/wp-content/uploads/melodia-logo.png",
+        meta: null
+    },
+    {
+        freq: 93.6,
+        name: "Kosmos",
+        url: "https://kosmos936.live24.gr/kosmos936",
+        logo: "https://www.live24.gr/wp-content/uploads/kosmos-logo.png",
+        meta: null
     },
     {
         freq: 94.3,
         name: "ΣΚΑΪ 100.3",
-        url: "https://stream.skai.gr/skai1003",
-        logo: "logos/skairadio.png",
+        url: "https://skai1003.live24.gr/skai1003",
+        logo: "https://www.live24.gr/wp-content/uploads/skai-logo.png",
+        meta: null
+    },
+    {
+        freq: 94.6,
+        name: "Sport FM",
+        url: "https://sportfm946.live24.gr/sportfm946",
+        logo: "https://www.live24.gr/wp-content/uploads/sportfm-logo.png",
         meta: null
     },
     {
         freq: 95.2,
         name: "Athens DeeJay",
-        url: "https://stream.radiojar.com/athensdeejay",
-        logo: "logos/athensdj.png",
-        meta: "https://stream.radiojar.com/athensdeejay/metadata"
+        url: "https://athensdeejay952.live24.gr/athensdeejay952",
+        logo: "https://www.live24.gr/wp-content/uploads/athensdeejay-logo.png",
+        meta: null
     },
     {
         freq: 96.0,
         name: "Rock FM",
-        url: "https://stream.radiojar.com/rockfm",
-        logo: "logos/rockfm.png",
-        meta: "https://stream.radiojar.com/rockfm/metadata"
+        url: "https://rockfm960.live24.gr/rockfm960",
+        logo: "https://www.live24.gr/wp-content/uploads/rockfm-logo.png",
+        meta: null
+    },
+    {
+        freq: 97.2,
+        name: "Easy 97.2",
+        url: "https://easy972.live24.gr/easy972",
+        logo: "https://www.live24.gr/wp-content/uploads/easy-logo.png",
+        meta: null
+    },
+    {
+        freq: 97.8,
+        name: "Real FM",
+        url: "https://realfm978.live24.gr/realfm978",
+        logo: "https://www.live24.gr/wp-content/uploads/realfm-logo.png",
+        meta: null
     },
     {
         freq: 98.0,
         name: "Ρυθμός",
-        url: "https://stream.radiojar.com/rythmos",
-        logo: "logos/rythmos.png",
-        meta: "https://stream.radiojar.com/rythmos/metadata"
+        url: "https://rythmos980.live24.gr/rythmos980",
+        logo: "https://www.live24.gr/wp-content/uploads/rythmos-logo.png",
+        meta: null
+    },
+    {
+        freq: 98.6,
+        name: "Derti",
+        url: "https://derty986.live24.gr/derty986",
+        logo: "https://www.live24.gr/wp-content/uploads/derty-logo.png",
+        meta: null
     },
     {
         freq: 99.5,
         name: "Kiss FM",
-        url: "https://stream.radiojar.com/kissfm",
-        logo: "logos/kiss.png",
-        meta: "https://stream.radiojar.com/kissfm/metadata"
+        url: "https://kissfm995.live24.gr/kissfm995",
+        logo: "https://www.live24.gr/wp-content/uploads/kissfm-logo.png",
+        meta: null
     },
     {
         freq: 100.3,
         name: "ΣΚΑΪ News",
-        url: "https://stream.skai.gr/skai",
-        logo: "logos/skairadio.png",
+        url: "https://skai1003.live24.gr/skai1003",
+        logo: "https://www.live24.gr/wp-content/uploads/skai-logo.png",
         meta: null
     },
     {
         freq: 102.2,
         name: "Love Radio",
-        url: "https://stream.radiojar.com/love",
-        logo: "logos/love.png",
-        meta: "https://stream.radiojar.com/love/metadata"
+        url: "https://loveradio1022.live24.gr/loveradio1022",
+        logo: "https://www.live24.gr/wp-content/uploads/love-logo.png",
+        meta: null
     },
     {
         freq: 104.6,
         name: "En Lefko",
-        url: "https://stream.radiojar.com/enlefko",
-        logo: "logos/enlefko.png",
-        meta: "https://stream.radiojar.com/enlefko/metadata"
+        url: "https://enlefko1046.live24.gr/enlefko1046",
+        logo: "https://www.live24.gr/wp-content/uploads/enlefko-logo.png",
+        meta: null
     },
     {
         freq: 105.5,
         name: "Στο Κόκκινο",
-        url: "https://stream.radiojar.com/kokkino",
-        logo: "logos/kokkino.png",
-        meta: "https://stream.radiojar.com/kokkino/metadata"
+        url: "https://stokokkino1055.live24.gr/stokokkino1055",
+        logo: "https://www.live24.gr/wp-content/uploads/kokkino-logo.png",
+        meta: null
+    },
+    {
+        freq: 107.1,
+        name: "Real Music",
+        url: "https://realmusic1071.live24.gr/realmusic1071",
+        logo: "https://www.live24.gr/wp-content/uploads/realmusic-logo.png",
+        meta: null
     }
 ];
+
 
 
 let currentStation = 0;
