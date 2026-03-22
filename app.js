@@ -126,3 +126,70 @@ window.onload = function () {
     initMap();
     startGPS();
 };
+// ----------------------
+// ANALOG RADIO TUNER
+// ----------------------
+
+let radioStations = [
+    { freq: 87.7, name: "Δίεση", url: "https://stream.radiojar.com/8s5u5tpdtwzuv" },
+    { freq: 88.0, name: "ΕΡΑ ΣΠΟΡ", url: "https://radiostreaming.ert.gr/ert-erasport" },
+    { freq: 88.6, name: "Pepper", url: "https://stream.radiojar.com/pepper" },
+    { freq: 89.2, name: "Sfera", url: "https://stream.radiojar.com/sfera" },
+    { freq: 90.1, name: "ΕΡΑ 1", url: "https://radiostreaming.ert.gr/ert-proto" },
+    { freq: 91.3, name: "Red", url: "https://stream.radiojar.com/red" },
+    { freq: 92.3, name: "Λάμψη", url: "https://stream.radiojar.com/lampsi" },
+    { freq: 93.2, name: "Μελωδία", url: "https://stream.radiojar.com/melodia" },
+    { freq: 94.3, name: "ΣΚΑΪ", url: "https://stream.skai.gr/skai" },
+    { freq: 95.2, name: "Athens DeeJay", url: "https://stream.radiojar.com/athensdeejay" },
+    { freq: 96.0, name: "Rock FM", url: "https://stream.radiojar.com/rockfm" },
+    { freq: 98.0, name: "Ρυθμός", url: "https://stream.radiojar.com/rythmos" },
+    { freq: 99.5, name: "Kiss FM", url: "https://stream.radiojar.com/kissfm" },
+    { freq: 100.3, name: "ΣΚΑΪ News", url: "https://stream.skai.gr/skai1003" },
+    { freq: 102.2, name: "Love Radio", url: "https://stream.radiojar.com/love" },
+    { freq: 104.6, name: "En Lefko", url: "https://stream.radiojar.com/enlefko" },
+    { freq: 105.5, name: "Στο Κόκκινο", url: "https://stream.radiojar.com/kokkino" }
+];
+
+let currentStation = 0;
+let radioAnalog = new Audio();
+
+function updateTuner() {
+    let station = radioStations[currentStation];
+
+    document.getElementById("freqDisplay").innerText = station.freq + " MHz";
+    document.getElementById("stationName").innerText = station.name;
+
+    // Move indicator
+    let minFreq = 87.5;
+    let maxFreq = 108.0;
+    let percent = (station.freq - minFreq) / (maxFreq - minFreq);
+
+    let scaleWidth = document.getElementById("scale").offsetWidth;
+    let indicator = document.getElementById("indicator");
+
+    indicator.style.left = (percent * scaleWidth) + "px";
+}
+
+function nextStation() {
+    currentStation++;
+    if (currentStation >= radioStations.length) currentStation = 0;
+
+    let station = radioStations[currentStation];
+
+    radioAnalog.src = station.url;
+    radioAnalog.play();
+
+    updateTuner();
+}
+
+function stopRadio() {
+    radioAnalog.pause();
+    radioAnalog.src = "";
+}
+
+// Initialize tuner on load
+window.onload = function () {
+    initMap();
+    startGPS();
+    updateTuner();
+};
