@@ -159,80 +159,29 @@ function showScreen(name) {
 /* ----------------------
    ΡΑΔΙΟΦΩΝΟ (ΑΠΛΟΠΟΙΗΜΕΝΟ, ΑΣΦΑΛΕΣ)
 ---------------------- */
-var radioStations = [
-    { freq: 90.1, name: "ΕΡΑ Πρώτο", url: "http://radiostreaming.ert.gr/ert-proto", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
-    { freq: 90.9, name: "ΕΡΑ Τρίτο", url: "http://radiostreaming.ert.gr/ert-trito", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
-    { freq: 88.0, name: "ΕΡΑ Σπορ", url: "http://radiostreaming.ert.gr/ert-sports", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
-    { freq: 93.6, name: "Kosmos", url: "http://radiostreaming.ert.gr/kosmos", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
-    { freq: 88.1, name: "Radio 1 (Ηράκλειο)", url: "http://radio1.gr:8000/radio1", logo: "https://radio1.gr/radio1_logo.png" },
-    { freq: 90.4, name: "Radio Crete", url: "http://stream.radiocreta.gr:8000/radiocreta", logo: "https://www.radiocreta.gr/images/logo.png" },
-    { freq: 88.9, name: "Kriti FM", url: "http://live.radiostudio.gr/kritifm", logo: "https://www.kritifm.gr/images/logo.png" }
-];
-var currentStationIndex = 0;
-var audioElement = null;
-var isRadioPlaying = false;
-
-function updateRadioUI() {
-    var station = radioStations[currentStationIndex];
-    if (!station) return;
-    document.getElementById('freqDisplay').innerText = station.freq.toFixed(1) + ' MHz';
-    document.getElementById('stationName').innerText = station.name;
-    document.getElementById('stationLogo').src = station.logo;
-    var indicator = document.getElementById('indicator');
-    if (indicator) {
-        var minFreq = 87.5, maxFreq = 108.0;
-        var percent = (station.freq - minFreq) / (maxFreq - minFreq) * 100;
-        percent = Math.min(100, Math.max(0, percent));
-        indicator.style.left = percent + '%';
-    }
-}
-
-function playRadio() {
-    if (!audioElement) {
-        audioElement = new Audio();
-        audioElement.crossOrigin = "anonymous";
-    }
-    var station = radioStations[currentStationIndex];
-    if (!station) return;
-    if (audioElement.src !== station.url) {
-        audioElement.src = station.url;
-    }
-    var promise = audioElement.play();
-    if (promise !== undefined) {
-        promise.then(function() {
-            isRadioPlaying = true;
-            document.getElementById('songInfo').innerText = 'Παίζει...';
-        }).catch(function(e) {
-            console.log("Audio error:", e);
-            document.getElementById('songInfo').innerText = 'Δεν μπορεί να παίξει (CORS/format)';
-            isRadioPlaying = false;
-        });
-    } else {
-        isRadioPlaying = true;
-        document.getElementById('songInfo').innerText = 'Παίζει...';
-    }
-}
-
-function stopRadio() {
-    if (audioElement) {
-        audioElement.pause();
-        isRadioPlaying = false;
-        document.getElementById('songInfo').innerText = 'Σταμάτησε';
-    }
-}
-
+/* ----------------------
+   ΡΑΔΙΟΦΩΝΟ (ΑΠΛΟ TEST)
+---------------------- */
 function prevStation() {
-    currentStationIndex--;
-    if (currentStationIndex < 0) currentStationIndex = radioStations.length - 1;
-    updateRadioUI();
-    if (isRadioPlaying) playRadio();
+    var debug = document.getElementById('debugText');
+    debug.innerText = "prevStation called";
 }
 
 function nextStation() {
-    currentStationIndex++;
-    if (currentStationIndex >= radioStations.length) currentStationIndex = 0;
-    updateRadioUI();
-    if (isRadioPlaying) playRadio();
+    var debug = document.getElementById('debugText');
+    debug.innerText = "nextStation called";
+}
+
+function testPlay() {
+    var debug = document.getElementById('debugText');
+    debug.innerText = "testPlay called";
+    var audio = new Audio();
+    audio.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"; // γνωστό δοκιμαστικό MP3
+    audio.play().then(function() {
+        debug.innerText = "Playback started successfully!";
+    }).catch(function(e) {
+        debug.innerText = "Playback error: " + e.message;
+    });
 }
 
 /* ----------------------
