@@ -4,14 +4,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Car Dashboard</title>
 
-<!-- CSS -->
 <link rel="stylesheet" href="style.css">
 
-<!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-<!-- Polyfills for old Safari -->
 <script src="https://cdn.jsdelivr.net/npm/promise-polyfill/dist/polyfill.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch/dist/fetch.umd.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/core-js-bundle/minified.js"></script>
@@ -19,44 +16,40 @@
 
 <body>
 
-<!-- DEBUG PANEL -->
 <div id="debug">
     <h3>DEBUG PANEL</h3>
     <pre id="debugText">Waiting for GPS...</pre>
 </div>
 
-<!-- SPEED DISPLAY -->
 <div id="speed">0 km/h</div>
 
-<!-- SCREENS -->
 <div id="screen-map" class="screen active">
     <div id="map"></div>
 </div>
 
 <div id="screen-radio" class="screen">
     <h1>Αναλογικό Ραδιόφωνο</h1>
-    <div id="radio-display">
-    <img id="stationLogo" src="" alt="Logo">
-    <div id="songInfo">Loading...</div>
-</div>
 
-
-<div id="tuner">
-    <div id="scale">
-        <div id="indicator"></div>
+    <div id="tuner">
+        <div id="scale">
+            <div id="indicator"></div>
+        </div>
     </div>
-</div>
 
-<div id="radio-info">
-    <div id="freqDisplay">87.7 MHz</div>
-    <div id="stationName">Δίεση</div>
-</div>
+    <div id="radio-info">
+        <div id="freqDisplay">87.7 MHz</div>
+        <div id="stationName">Σταθμός</div>
+    </div>
 
-<div id="radio-controls">
-    <button class="big-btn" onclick="nextStation()">▶ Επόμενος</button>
-    <button class="big-btn" onclick="stopRadio()">■ Stop</button>
-</div>
+    <div id="radio-display">
+        <img id="stationLogo" src="" alt="Logo">
+        <div id="songInfo">Loading...</div>
+    </div>
 
+    <div id="radio-controls">
+        <button class="big-btn" onclick="prevStation()">◀ Προηγούμενος</button>
+        <button class="big-btn" onclick="nextStation()">▶ Επόμενος</button>
+    </div>
 </div>
 
 <div id="screen-music" class="screen">
@@ -67,7 +60,6 @@
     <h1>Ρυθμίσεις</h1>
 </div>
 
-<!-- CONTROLS -->
 <div id="controls">
     <button class="big-btn" onclick="showScreen('map')">Χάρτης</button>
     <button class="big-btn" onclick="showScreen('radio')">Ραδιόφωνο</button>
@@ -75,7 +67,6 @@
     <button class="big-btn" onclick="showScreen('settings')">Ρυθμίσεις</button>
 </div>
 
-<!-- APP LOGIC -->
 <script src="app.js"></script>
 
 </body>
