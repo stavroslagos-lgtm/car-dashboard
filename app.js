@@ -137,7 +137,7 @@ let radioStations = [
         freq: 105.1,
         name: "Μουσικό Κανάλι",
         url: "https://sh.onweb.gr:7086/stream",
-        logo: "logos/mousiko.jpg",
+        logo: "logos/mousiko.png",
         meta: "https://sh.onweb.gr:7086/status-json.xsl"
     }
 ];
@@ -158,9 +158,7 @@ function updateTuner() {
 
     let minFreq = 87.5;
     let maxFreq = 108.0;
-    let percent = (station.freq - minFreq) / (maxFreq - maxFreq + 20.5); // μικρό hack για εύρος
-    // καλύτερα:
-    percent = (station.freq - minFreq) / (108.0 - minFreq);
+    let percent = (station.freq - minFreq) / (maxFreq - minFreq);
 
     const scale = document.getElementById("scale");
     const indicator = document.getElementById("indicator");
