@@ -126,6 +126,7 @@ function showScreen(name) {
 // ANALOG RADIO + LOGO + METADATA
 // ----------------------
 let radioStations = [
+    // --- ΗΡΑΚΛΕΙΟ ---
     {
         freq: 88.1,
         name: "Fly FM",
@@ -139,8 +140,109 @@ let radioStations = [
         url: "https://sh.onweb.gr:7086/stream",
         logo: "logos/mousiko.png",
         meta: "https://sh.onweb.gr:7086/status-json.xsl"
+    },
+
+    // --- ΑΘΗΝΑ ---
+    {
+        freq: 88.6,
+        name: "Pepper 96.6",
+        url: "https://stream.radiojar.com/pepper",
+        logo: "logos/pepper.png",
+        meta: "https://stream.radiojar.com/pepper/metadata"
+    },
+    {
+        freq: 89.2,
+        name: "Sfera",
+        url: "https://sfera.live24.gr/sfera4132",
+        logo: "logos/sfera.png",
+        meta: "https://sfera.live24.gr/status-json.xsl"
+    },
+    {
+        freq: 91.3,
+        name: "Red FM",
+        url: "https://stream.radiojar.com/red",
+        logo: "logos/red.png",
+        meta: "https://stream.radiojar.com/red/metadata"
+    },
+    {
+        freq: 92.3,
+        name: "Λάμψη",
+        url: "https://stream.radiojar.com/lampsi",
+        logo: "logos/lampsi.png",
+        meta: "https://stream.radiojar.com/lampsi/metadata"
+    },
+    {
+        freq: 93.2,
+        name: "Μελωδία",
+        url: "https://stream.radiojar.com/melodia",
+        logo: "logos/melodia.png",
+        meta: "https://stream.radiojar.com/melodia/metadata"
+    },
+    {
+        freq: 94.3,
+        name: "ΣΚΑΪ 100.3",
+        url: "https://stream.skai.gr/skai1003",
+        logo: "logos/skai.png",
+        meta: null
+    },
+    {
+        freq: 95.2,
+        name: "Athens DeeJay",
+        url: "https://stream.radiojar.com/athensdeejay",
+        logo: "logos/athensdeejay.png",
+        meta: "https://stream.radiojar.com/athensdeejay/metadata"
+    },
+    {
+        freq: 96.0,
+        name: "Rock FM",
+        url: "https://stream.radiojar.com/rockfm",
+        logo: "logos/rockfm.png",
+        meta: "https://stream.radiojar.com/rockfm/metadata"
+    },
+    {
+        freq: 98.0,
+        name: "Ρυθμός",
+        url: "https://stream.radiojar.com/rythmos",
+        logo: "logos/rythmos.png",
+        meta: "https://stream.radiojar.com/rythmos/metadata"
+    },
+    {
+        freq: 99.5,
+        name: "Kiss FM",
+        url: "https://stream.radiojar.com/kissfm",
+        logo: "logos/kissfm.png",
+        meta: "https://stream.radiojar.com/kissfm/metadata"
+    },
+    {
+        freq: 100.3,
+        name: "ΣΚΑΪ News",
+        url: "https://stream.skai.gr/skai",
+        logo: "logos/skai.png",
+        meta: null
+    },
+    {
+        freq: 102.2,
+        name: "Love Radio",
+        url: "https://stream.radiojar.com/love",
+        logo: "logos/love.png",
+        meta: "https://stream.radiojar.com/love/metadata"
+    },
+    {
+        freq: 104.6,
+        name: "En Lefko",
+        url: "https://stream.radiojar.com/enlefko",
+        logo: "logos/enlefko.png",
+        meta: "https://stream.radiojar.com/enlefko/metadata"
+    },
+    {
+        freq: 105.5,
+        name: "Στο Κόκκινο",
+        url: "https://stream.radiojar.com/kokkino",
+        logo: "logos/kokkino.png",
+        meta: "https://stream.radiojar.com/kokkino/metadata"
     }
 ];
+
 
 let currentStation = 0;
 let radioAnalog = new Audio();
