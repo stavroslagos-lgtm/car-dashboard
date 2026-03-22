@@ -161,10 +161,7 @@ function showScreen(name) {
 ---------------------- */
 // Αντικατάστησε το τμήμα RADIO με αυτό
 var radioStations = [
-    { freq: 90.1, name: "ΕΡΑ Πρώτο", url: "https://radiostreaming.ert.gr/ert-proto.m3u8", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
-    { freq: 90.9, name: "ΕΡΑ Τρίτο", url: "https://radiostreaming.ert.gr/ert-trito.m3u8", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
-    { freq: 88.0, name: "ΕΡΑ Σπορ", url: "https://radiostreaming.ert.gr/ert-sports.m3u8", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
-    { freq: 93.6, name: "Kosmos", url: "https://radiostreaming.ert.gr/kosmos.m3u8", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" }
+    { freq: 90.1, name: "Sfera", url: "https://sfera.live24.gr/sfera4132", logo: "https://live24.gr/resrc/styles/custom-popups/sfera/images/logo.png" },
 ];
 var currentStationIndex = 0;
 var audioElement = null;
