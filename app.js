@@ -161,7 +161,7 @@ function showScreen(name) {
 ---------------------- */
 // Αντικατάστησε το τμήμα RADIO με αυτό
 var radioStations = [
-    { freq: 90.1, name: "Sfera", url: "https://stream1.mousikokanali.gr/mc", logo: "https://live24.gr/resrc/styles/custom-popups/sfera/images/logo.png" },
+    { freq: 90.1, name: "Mousiko Kanali", url: "https://stream1.mousikokanali.gr/mc", logo: "https://mousikokanali.gr/wp-content/uploads/2020/02/logo-mousiko-kanali--e1581549491878.png" },
 ];
 var currentStationIndex = 0;
 var audioElement = null;
