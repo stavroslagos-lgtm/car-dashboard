@@ -159,11 +159,25 @@ function showScreen(name) {
 /* ----------------------
    ΡΑΔΙΟΦΩΝΟ (ΑΠΛΟΠΟΙΗΜΕΝΟ, ΑΣΦΑΛΕΣ)
 ---------------------- */
+// Επιλογή: χρήση proxy (αλλάζοντας τη μεταβλητή)
+var useProxy = false; // βάλε true αν χρειαστεί CORS proxy
+var corsProxy = "https://corsproxy.io/?";
+
 var radioStations = [
-    { freq: 88.1, name: "Fly FM", url: "https://flyfm881.live24.gr/flyfm881", logo: "https://www.live24.gr/wp-content/uploads/flyfm881-logo.png" },
-    { freq: 105.1, name: "Μουσικό Κανάλι", url: "https://mousikokanali1051.live24.gr/mousikokanali1051", logo: "https://www.live24.gr/wp-content/uploads/mousikokanali-logo.png" }
-    // Προσθέστε όσους σταθμούς θέλετε
+    { freq: 95.2, name: "Athens DeeJay", url: "https://netradio.live24.gr/athensdeejay952", logo: "https://www.live24.gr/wp-content/uploads/athensdeejay-logo.png" },
+    { freq: 92.9, name: "Kiss FM", url: "https://kissfm.live24.gr/kissfmathens", logo: "https://www.live24.gr/wp-content/uploads/kiss-logo.png" },
+    { freq: 92.6, name: "Best FM", url: "http://best.live24.gr/bestathinas", logo: "https://www.live24.gr/wp-content/uploads/best-logo.png" },
+    { freq: 88.1, name: "Radio 1 (Ηράκλειο)", url: "http://radio1.gr:8000/radio1", logo: "https://radio1.gr/radio1_logo.png" },
+    { freq: 90.4, name: "Radio Crete", url: "http://stream.radiocreta.gr:8000/radiocreta", logo: "https://www.radiocreta.gr/images/logo.png" },
+    { freq: 88.9, name: "Kriti FM", url: "http://live.radiostudio.gr/kritifm", logo: "https://www.kritifm.gr/images/logo.png" }
 ];
+
+// Αν χρησιμοποιείς proxy, πρόσθεσε το prefix
+if (useProxy) {
+    for (var i = 0; i < radioStations.length; i++) {
+        radioStations[i].url = corsProxy + encodeURIComponent(radioStations[i].url);
+    }
+}
 var currentStationIndex = 0;
 var audioElement = null;
 var isRadioPlaying = false;
