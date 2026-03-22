@@ -160,7 +160,7 @@ function showScreen(name) {
    ΡΑΔΙΟΦΩΝΟ (ΑΠΛΟΠΟΙΗΜΕΝΟ, ΑΣΦΑΛΕΣ)
 ---------------------- */
 // Επιλογή: χρήση proxy (αλλάζοντας τη μεταβλητή)
-var useProxy = false; // βάλε true αν χρειαστεί CORS proxy
+var useProxy = true; // βάλε true αν χρειαστεί CORS proxy
 var corsProxy = "https://corsproxy.io/?";
 
 var radioStations = [
