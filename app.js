@@ -159,20 +159,22 @@ function showScreen(name) {
 /* ----------------------
    ΡΑΔΙΟΦΩΝΟ (ΑΠΛΟΠΟΙΗΜΕΝΟ, ΑΣΦΑΛΕΣ)
 ---------------------- */
-// Επιλογή: χρήση proxy (αλλάζοντας τη μεταβλητή)
-var useProxy = true; // βάλε true αν χρειαστεί CORS proxy
+// Επιλέξτε αν θα χρησιμοποιήσετε CORS proxy
+var useProxy = false;   // βάλτε true αν δείτε σφάλματα CORS
 var corsProxy = "https://corsproxy.io/?";
 
 var radioStations = [
-    { freq: 95.2, name: "Athens DeeJay", url: "https://netradio.live24.gr/athensdeejay952", logo: "https://www.live24.gr/wp-content/uploads/athensdeejay-logo.png" },
-    { freq: 92.9, name: "Kiss FM", url: "https://kissfm.live24.gr/kissfmathens", logo: "https://www.live24.gr/wp-content/uploads/kiss-logo.png" },
+    { freq: 95.2, name: "Athens DeeJay", url: "http://netradio.live24.gr/athensdeejay952", logo: "https://www.live24.gr/wp-content/uploads/athensdeejay-logo.png" },
+    { freq: 92.9, name: "Kiss FM", url: "http://kissfm.live24.gr/kissfmathens", logo: "https://www.live24.gr/wp-content/uploads/kiss-logo.png" },
     { freq: 92.6, name: "Best FM", url: "http://best.live24.gr/bestathinas", logo: "https://www.live24.gr/wp-content/uploads/best-logo.png" },
     { freq: 88.1, name: "Radio 1 (Ηράκλειο)", url: "http://radio1.gr:8000/radio1", logo: "https://radio1.gr/radio1_logo.png" },
     { freq: 90.4, name: "Radio Crete", url: "http://stream.radiocreta.gr:8000/radiocreta", logo: "https://www.radiocreta.gr/images/logo.png" },
-    { freq: 88.9, name: "Kriti FM", url: "http://live.radiostudio.gr/kritifm", logo: "https://www.kritifm.gr/images/logo.png" }
+    { freq: 88.9, name: "Kriti FM", url: "http://live.radiostudio.gr/kritifm", logo: "https://www.kritifm.gr/images/logo.png" },
+    { freq: 88.0, name: "ERA Sport", url: "http://radiostreaming.ert.gr/ert-sports", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
+    { freq: 90.1, name: "ERA Proto", url: "http://radiostreaming.ert.gr/ert-proto", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" }
 ];
 
-// Αν χρησιμοποιείς proxy, πρόσθεσε το prefix
+// Εφαρμογή proxy αν χρειάζεται
 if (useProxy) {
     for (var i = 0; i < radioStations.length; i++) {
         radioStations[i].url = corsProxy + encodeURIComponent(radioStations[i].url);
