@@ -182,14 +182,14 @@ let radioStations = [
         freq: 94.3,
         name: "ΣΚΑΪ 100.3",
         url: "https://stream.skai.gr/skai1003",
-        logo: "logos/skai.png",
+        logo: "logos/skairadio.png",
         meta: null
     },
     {
         freq: 95.2,
         name: "Athens DeeJay",
         url: "https://stream.radiojar.com/athensdeejay",
-        logo: "logos/athensdeejay.png",
+        logo: "logos/athensdj.png",
         meta: "https://stream.radiojar.com/athensdeejay/metadata"
     },
     {
@@ -210,14 +210,14 @@ let radioStations = [
         freq: 99.5,
         name: "Kiss FM",
         url: "https://stream.radiojar.com/kissfm",
-        logo: "logos/kissfm.png",
+        logo: "logos/kiss.png",
         meta: "https://stream.radiojar.com/kissfm/metadata"
     },
     {
         freq: 100.3,
         name: "ΣΚΑΪ News",
         url: "https://stream.skai.gr/skai",
-        logo: "logos/skai.png",
+        logo: "logos/skairadio.png",
         meta: null
     },
     {
