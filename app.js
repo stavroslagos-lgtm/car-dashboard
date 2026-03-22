@@ -7,20 +7,27 @@ let lastPos = null;
 let lastTime = null;
 
 // ----------------------
+// DEBUG PANEL
+// ----------------------
+function debugLog(obj) {
+    document.getElementById("debugText").innerText =
+        JSON.stringify(obj, null, 2);
+}
+
+// ----------------------
 // ΥΠΟΛΟΓΙΣΜΟΣ ΤΑΧΥΤΗΤΑΣ
 // ----------------------
 function distance(lat1, lon1, lat2, lon2) {
-    let R = 6371000; // ακτίνα Γης σε μέτρα
+    let R = 6371000;
     let dLat = (lat2 - lat1) * Math.PI / 180;
     let dLon = (lon2 - lon1) * Math.PI / 180;
     let a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.sin(dLat / 2) ** 2 +
         Math.cos(lat1 * Math.PI / 180) *
         Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        Math.sin(dLon / 2) ** 2;
 
-    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // μέτρα
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 function updateSpeedFromPosition(position) {
@@ -34,7 +41,7 @@ function updateSpeedFromPosition(position) {
             position.coords.longitude
         );
 
-        let dt = (now - lastTime) / 1000; // δευτερόλεπτα
+        let dt = (now - lastTime) / 1000;
 
         if (dt > 0) {
             let speed = dx / dt; // m/s
@@ -54,7 +61,6 @@ function updateSpeedFromPosition(position) {
 // ΑΡΧΙΚΟΠΟΙΗΣΗ ΧΑΡΤΗ
 // ----------------------
 function initMap() {
-    // Αρχικό κέντρο (Ηράκλειο περίπου)
     map = L.map('map').setView([35.3387, 25.1442], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -69,26 +75,35 @@ function initMap() {
 // ----------------------
 function startGPS() {
     if (!navigator.geolocation) {
-        console.log("Geolocation δεν υποστηρίζεται.");
+        debugLog({ error: "Geolocation not supported" });
         return;
     }
 
     navigator.geolocation.watchPosition(function (position) {
-        // Υπολογισμός ταχύτητας
+
         updateSpeedFromPosition(position);
 
-        // Ενημέρωση χάρτη
         let lat = position.coords.latitude;
         let lon = position.coords.longitude;
 
         marker.setLatLng([lat, lon]);
         map.setView([lat, lon]);
 
+        // DEBUG INFO
+        debugLog({
+            latitude: lat,
+            longitude: lon,
+            accuracy: position.coords.accuracy,
+            altitude: position.coords.altitude,
+            heading: position.coords.heading,
+            speed_raw: position.coords.speed,
+            timestamp: new Date(position.timestamp).toLocaleTimeString()
+        });
+
     }, function (error) {
-        console.log("GPS error:", error);
+        debugLog({ gps_error: error.message });
     }, {
         maximumAge: 0
-        // ΔΕΝ βάζουμε enableHighAccuracy σε iOS 10
     });
 }
 
@@ -99,11 +114,8 @@ function showScreen(name) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + name).classList.add('active');
 
-    // Αν γυρίσουμε στον χάρτη, ενημερώνουμε το μέγεθος
     if (name === 'map' && map) {
-        setTimeout(() => {
-            map.invalidateSize();
-        }, 200);
+        setTimeout(() => map.invalidateSize(), 200);
     }
 }
 
