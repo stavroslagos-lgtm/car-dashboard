@@ -57,3 +57,26 @@ body {
 #screen-radio, #screen-music, #screen-settings {
     font-size: 32px;
 }
+#debug {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 260px;
+    background: rgba(0,0,0,0.8);
+    color: #0f0;
+    padding: 10px;
+    font-size: 12px;
+    border-left: 2px solid #0f0;
+    border-bottom: 2px solid #0f0;
+    z-index: 9999;
+}
+
+#debug h3 {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    text-align: center;
+}
+
+#debug pre {
+    white-space: pre-wrap;
+}
