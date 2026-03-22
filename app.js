@@ -159,30 +159,101 @@ function showScreen(name) {
 /* ----------------------
    ΡΑΔΙΟΦΩΝΟ (ΑΠΛΟΠΟΙΗΜΕΝΟ, ΑΣΦΑΛΕΣ)
 ---------------------- */
-/* ----------------------
-   ΡΑΔΙΟΦΩΝΟ (ΑΠΛΟ TEST)
----------------------- */
+// Αντικατάστησε το τμήμα RADIO με αυτό
+var radioStations = [
+    { freq: 90.1, name: "ΕΡΑ Πρώτο", url: "https://radiostreaming.ert.gr/ert-proto.m3u8", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
+    { freq: 90.9, name: "ΕΡΑ Τρίτο", url: "https://radiostreaming.ert.gr/ert-trito.m3u8", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
+    { freq: 88.0, name: "ΕΡΑ Σπορ", url: "https://radiostreaming.ert.gr/ert-sports.m3u8", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" },
+    { freq: 93.6, name: "Kosmos", url: "https://radiostreaming.ert.gr/kosmos.m3u8", logo: "https://www.ert.gr/wp-content/themes/ert/assets/images/ert-logo.png" }
+];
+var currentStationIndex = 0;
+var audioElement = null;
+var isRadioPlaying = false;
+
+function debugRadio(msg) {
+    var el = document.getElementById("debugText");
+    if (el) {
+        el.innerText = (el.innerText || "") + "\n[Radio] " + msg;
+    }
+}
+
+function updateRadioUI() {
+    var station = radioStations[currentStationIndex];
+    if (!station) return;
+    var freqDisplay = document.getElementById('freqDisplay');
+    var stationName = document.getElementById('stationName');
+    var stationLogo = document.getElementById('stationLogo');
+    var indicator = document.getElementById('indicator');
+    if (freqDisplay) freqDisplay.innerText = station.freq.toFixed(1) + ' MHz';
+    if (stationName) stationName.innerText = station.name;
+    if (stationLogo) stationLogo.src = station.logo;
+    if (indicator) {
+        var minFreq = 87.5, maxFreq = 108.0;
+        var percent = (station.freq - minFreq) / (maxFreq - minFreq) * 100;
+        percent = Math.min(100, Math.max(0, percent));
+        indicator.style.left = percent + '%';
+    }
+}
+
+function playRadio() {
+    if (!audioElement) {
+        audioElement = new Audio();
+        audioElement.onerror = function(e) {
+            var err = audioElement.error;
+            debugRadio("Audio error: code=" + (err ? err.code : "unknown") + " msg=" + (err ? err.message : ""));
+            document.getElementById('songInfo').innerText = 'Σφάλμα ήχου';
+        };
+    }
+    var station = radioStations[currentStationIndex];
+    if (!station) return;
+    if (audioElement.src !== station.url) {
+        debugRadio("Loading HLS stream: " + station.url);
+        audioElement.src = station.url;
+        audioElement.load();
+    }
+    var promise = audioElement.play();
+    if (promise !== undefined) {
+        promise.then(function() {
+            debugRadio("Playback started");
+            isRadioPlaying = true;
+            document.getElementById('songInfo').innerText = 'Παίζει...';
+        }).catch(function(e) {
+            debugRadio("Playback error: " + e.message);
+            document.getElementById('songInfo').innerText = 'Σφάλμα: ' + e.message;
+            isRadioPlaying = false;
+        });
+    } else {
+        debugRadio("Playback without promise");
+        isRadioPlaying = true;
+        document.getElementById('songInfo').innerText = 'Παίζει...';
+    }
+}
+
+function stopRadio() {
+    if (audioElement) {
+        audioElement.pause();
+        isRadioPlaying = false;
+        document.getElementById('songInfo').innerText = 'Σταμάτησε';
+        debugRadio("Stopped");
+    }
+}
+
 function prevStation() {
-    var debug = document.getElementById('debugText');
-    debug.innerText = "prevStation called";
+    currentStationIndex--;
+    if (currentStationIndex < 0) currentStationIndex = radioStations.length - 1;
+    updateRadioUI();
+    if (isRadioPlaying) playRadio();
 }
 
 function nextStation() {
-    var debug = document.getElementById('debugText');
-    debug.innerText = "nextStation called";
+    currentStationIndex++;
+    if (currentStationIndex >= radioStations.length) currentStationIndex = 0;
+    updateRadioUI();
+    if (isRadioPlaying) playRadio();
 }
 
-function testPlay() {
-    var debug = document.getElementById('debugText');
-    debug.innerText = "testPlay called";
-    var audio = new Audio();
-    audio.src = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"; // γνωστό δοκιμαστικό MP3
-    audio.play().then(function() {
-        debug.innerText = "Playback started successfully!";
-    }).catch(function(e) {
-        debug.innerText = "Playback error: " + e.message;
-    });
-}
+// Κλήση updateRadioUI κατά την εκκίνηση
+updateRadioUI();
 
 /* ----------------------
    ΕΚΚΙΝΗΣΗ
