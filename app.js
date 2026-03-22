@@ -161,7 +161,7 @@ function showScreen(name) {
 ---------------------- */
 // Αντικατάστησε το τμήμα RADIO με αυτό
 var radioStations = [
-    { freq: 90.1, name: "Sfera", url: "https://sfera.live24.gr/sfera4132", logo: "https://live24.gr/resrc/styles/custom-popups/sfera/images/logo.png" },
+    { freq: 90.1, name: "Sfera", url: "https://stream1.mousikokanali.gr/mc", logo: "https://live24.gr/resrc/styles/custom-popups/sfera/images/logo.png" },
 ];
 var currentStationIndex = 0;
 var audioElement = null;
