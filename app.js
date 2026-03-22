@@ -137,7 +137,7 @@ let radioStations = [
         freq: 105.1,
         name: "Μουσικό Κανάλι",
         url: "https://sh.onweb.gr:7086/stream",
-        logo: "logos/mousiko.png",
+        logo: "logos/mousiko.jpg",
         meta: "https://sh.onweb.gr:7086/status-json.xsl"
     }
 ];
