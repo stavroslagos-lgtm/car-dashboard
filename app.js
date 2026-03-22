@@ -10,8 +10,10 @@ let lastTime = null;
 // DEBUG PANEL
 // ----------------------
 function debugLog(obj) {
-    document.getElementById("debugText").innerText =
-        JSON.stringify(obj, null, 2);
+    const el = document.getElementById("debugText");
+    if (el) {
+        el.innerText = JSON.stringify(obj, null, 2);
+    }
 }
 
 // ----------------------
@@ -44,9 +46,10 @@ function updateSpeedFromPosition(position) {
         let dt = (now - lastTime) / 1000;
 
         if (dt > 0) {
-            let speed = dx / dt; // m/s
+            let speed = dx / dt;
             let kmh = (speed * 3.6).toFixed(1);
-            document.getElementById("speed").innerText = kmh + " km/h";
+            const sp = document.getElementById("speed");
+            if (sp) sp.innerText = kmh + " km/h";
         }
     }
 
@@ -89,7 +92,6 @@ function startGPS() {
         marker.setLatLng([lat, lon]);
         map.setView([lat, lon]);
 
-        // DEBUG INFO
         debugLog({
             latitude: lat,
             longitude: lon,
@@ -112,7 +114,8 @@ function startGPS() {
 // ----------------------
 function showScreen(name) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-' + name).classList.add('active');
+    const scr = document.getElementById('screen-' + name);
+    if (scr) scr.classList.add('active');
 
     if (name === 'map' && map) {
         setTimeout(() => map.invalidateSize(), 200);
@@ -120,37 +123,23 @@ function showScreen(name) {
 }
 
 // ----------------------
-// ΕΝΑΡΞΗ ΕΦΑΡΜΟΓΗΣ
+// ANALOG RADIO + LOGO + METADATA
 // ----------------------
-window.onload = function () {
-    initMap();
-    startGPS();
-};
-// ----------------------
-// ANALOG RADIO TUNER
-// ----------------------
-
 let radioStations = [
-    { freq: 87.7, name: "Δίεση", url: "https://stream.radiojar.com/8s5u5tpdtwzuv" },
-    { freq: 88.0, name: "ΕΡΑ ΣΠΟΡ", url: "https://radiostreaming.ert.gr/ert-erasport" },
-    { freq: 88.6, name: "Pepper", url: "https://stream.radiojar.com/pepper" },
-    { freq: 89.2, name: "Sfera", url: "https://stream.radiojar.com/sfera" },
-    { freq: 90.1, name: "ΕΡΑ 1", url: "https://radiostreaming.ert.gr/ert-proto" },
-    { freq: 91.3, name: "Red", url: "https://stream.radiojar.com/red" },
-    { freq: 92.3, name: "Λάμψη", url: "https://stream.radiojar.com/lampsi" },
-    { freq: 93.2, name: "Μελωδία", url: "https://stream.radiojar.com/melodia" },
-    { freq: 94.3, name: "ΣΚΑΪ", url: "https://stream.skai.gr/skai" },
-    { freq: 95.2, name: "Athens DeeJay", url: "https://stream.radiojar.com/athensdeejay" },
-    { freq: 96.0, name: "Rock FM", url: "https://stream.radiojar.com/rockfm" },
-    { freq: 98.0, name: "Ρυθμός", url: "https://stream.radiojar.com/rythmos" },
-    { freq: 99.5, name: "Kiss FM", url: "https://stream.radiojar.com/kissfm" },
-    { freq: 100.3, name: "ΣΚΑΪ News", url: "https://stream.skai.gr/skai1003" },
-    { freq: 102.2, name: "Love Radio", url: "https://stream.radiojar.com/love" },
-    { freq: 104.6, name: "En Lefko", url: "https://stream.radiojar.com/enlefko" },
-    { freq: 105.5, name: "Στο Κόκκινο", url: "https://stream.radiojar.com/kokkino" },
-    { freq: 88.1, name: "Fly FM", url: "https://stream.radiojar.com/flyfm881" },
-    { freq: 105.1, name: "Μουσικό Κανάλι", url: "https://sh.onweb.gr:7086/stream" }
-
+    {
+        freq: 88.1,
+        name: "Fly FM",
+        url: "https://stream.radiojar.com/flyfm881",
+        logo: "logos/flyfm.png",
+        meta: "https://stream.radiojar.com/flyfm881/metadata"
+    },
+    {
+        freq: 105.1,
+        name: "Μουσικό Κανάλι",
+        url: "https://sh.onweb.gr:7086/stream",
+        logo: "logos/mousiko.png",
+        meta: "https://sh.onweb.gr:7086/status-json.xsl"
+    }
 ];
 
 let currentStation = 0;
@@ -159,18 +148,28 @@ let radioAnalog = new Audio();
 function updateTuner() {
     let station = radioStations[currentStation];
 
-    document.getElementById("freqDisplay").innerText = station.freq + " MHz";
-    document.getElementById("stationName").innerText = station.name;
+    const freqEl = document.getElementById("freqDisplay");
+    const nameEl = document.getElementById("stationName");
+    const logoEl = document.getElementById("stationLogo");
 
-    // Move indicator
+    if (freqEl) freqEl.innerText = station.freq + " MHz";
+    if (nameEl) nameEl.innerText = station.name;
+    if (logoEl) logoEl.src = station.logo;
+
     let minFreq = 87.5;
     let maxFreq = 108.0;
-    let percent = (station.freq - minFreq) / (maxFreq - minFreq);
+    let percent = (station.freq - minFreq) / (maxFreq - maxFreq + 20.5); // μικρό hack για εύρος
+    // καλύτερα:
+    percent = (station.freq - minFreq) / (108.0 - minFreq);
 
-    let scaleWidth = document.getElementById("scale").offsetWidth;
-    let indicator = document.getElementById("indicator");
+    const scale = document.getElementById("scale");
+    const indicator = document.getElementById("indicator");
+    if (scale && indicator) {
+        let scaleWidth = scale.offsetWidth;
+        indicator.style.left = (percent * scaleWidth) + "px";
+    }
 
-    indicator.style.left = (percent * scaleWidth) + "px";
+    fetchSongInfo();
 }
 
 function nextStation() {
@@ -180,17 +179,57 @@ function nextStation() {
     let station = radioStations[currentStation];
 
     radioAnalog.src = station.url;
-    radioAnalog.play();
+    radioAnalog.play().catch(() => {});
 
     updateTuner();
 }
 
-function stopRadio() {
-    radioAnalog.pause();
-    radioAnalog.src = "";
+function prevStation() {
+    currentStation--;
+    if (currentStation < 0) currentStation = radioStations.length - 1;
+
+    let station = radioStations[currentStation];
+
+    radioAnalog.src = station.url;
+    radioAnalog.play().catch(() => {});
+
+    updateTuner();
 }
 
-// Initialize tuner on load
+function fetchSongInfo() {
+    let station = radioStations[currentStation];
+    const infoEl = document.getElementById("songInfo");
+    if (!station.meta || !infoEl) return;
+
+    fetch(station.meta)
+        .then(r => r.json())
+        .then(data => {
+            let text = "";
+
+            if (data && data.now_playing && data.now_playing.song) {
+                text = data.now_playing.song.title;
+            } else if (data.icestats && data.icestats.source) {
+                if (Array.isArray(data.icestats.source)) {
+                    if (data.icestats.source[0].title) {
+                        text = data.icestats.source[0].title;
+                    }
+                } else if (data.icestats.source.title) {
+                    text = data.icestats.source.title;
+                }
+            }
+
+            if (!text) text = "No song info";
+
+            infoEl.innerText = text;
+        })
+        .catch(() => {
+            infoEl.innerText = "No song info";
+        });
+}
+
+// ----------------------
+// ΕΝΑΡΞΗ ΕΦΑΡΜΟΓΗΣ
+// ----------------------
 window.onload = function () {
     initMap();
     startGPS();
