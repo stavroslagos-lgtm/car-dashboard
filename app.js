@@ -147,7 +147,10 @@ let radioStations = [
     { freq: 100.3, name: "ΣΚΑΪ News", url: "https://stream.skai.gr/skai1003" },
     { freq: 102.2, name: "Love Radio", url: "https://stream.radiojar.com/love" },
     { freq: 104.6, name: "En Lefko", url: "https://stream.radiojar.com/enlefko" },
-    { freq: 105.5, name: "Στο Κόκκινο", url: "https://stream.radiojar.com/kokkino" }
+    { freq: 105.5, name: "Στο Κόκκινο", url: "https://stream.radiojar.com/kokkino" },
+    { freq: 88.1, name: "Fly FM", url: "https://stream.radiojar.com/flyfm881" },
+    { freq: 105.1, name: "Μουσικό Κανάλι", url: "https://sh.onweb.gr:7086/stream" }
+
 ];
 
 let currentStation = 0;
