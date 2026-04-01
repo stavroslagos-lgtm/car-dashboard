@@ -2,29 +2,46 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Music Player</title>
+    <title>Music Player + GPS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         body {
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             background: #111;
             color: #eee;
             font-family: Arial, sans-serif;
             text-align: center;
         }
 
-        .btn {
+        #player {
+            width: 95%;
+            max-width: 600px;
+            margin: 10px auto 10px auto;
             display: block;
+        }
+
+        #volumeControl {
             width: 90%;
-            max-width: 300px;
-            margin: 10px auto;
-            padding: 15px;
+            max-width: 400px;
+            margin: 10px auto 20px auto;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .btn {
+            flex: 1 1 30%;
+            margin: 8px;
+            padding: 20px 5px;
             background: #333;
             color: #fff;
             border: 1px solid #555;
-            border-radius: 6px;
+            border-radius: 10px;
             font-size: 1.1em;
             cursor: pointer;
         }
@@ -33,24 +50,65 @@
             background: #444;
         }
 
+        #stopBtn {
+            background: #660000;
+            border-color: #aa0000;
+        }
+
+        #stopBtn:hover {
+            background: #880000;
+        }
+
         #status {
-            margin-top: 20px;
+            margin-top: 15px;
             color: #aaa;
+        }
+
+        #gpsBox {
+            margin-top: 25px;
+            padding: 15px;
+            background: #222;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1em;
         }
     </style>
 </head>
 <body>
 
-<h1>Music Player</h1>
+<h2>Music Player</h2>
 
-<button class="btn" onclick="playCliqhop()">Play Cliqhop</button>
-<button class="btn" onclick="playGrooveSalad()">Play Groove Salad</button>
+<audio id="player" controls></audio>
 
-<div id="status">Select a track to play</div>
+<input id="volumeControl" type="range" min="0" max="1" step="0.01" value="1">
 
-<audio id="player" controls style="width:90%; max-width:300px; margin-top:20px;"></audio>
+<div class="button-row">
+    <button class="btn" onclick="playStation('cliqhop-128-mp3')">Cliqhop</button>
+    <button class="btn" onclick="playStation('defcon-128-mp3')">Defcon</button>
+    <button class="btn" onclick="playStation('digitalis-128-mp3')">Digitalis</button>
+    <button class="btn" onclick="playStation('groovesalad-256-mp3')">Groove Salad</button>
+    <button class="btn" onclick="playStation('gsclassic-128-mp3')">GS Classic</button>
+    <button class="btn" onclick="playStation('specials-128-mp3')">Specials</button>
+    <button class="btn" onclick="playStation('vaporwaves-128-mp3')">Vaporwaves</button>
+</div>
+
+<button id="stopBtn" class="btn" onclick="stopPlayback()">STOP</button>
+
+<div id="status">Select a station</div>
+
+<!-- GPS + SPEED INFO -->
+<div id="gpsBox">
+    <div>Speed: <span id="speed">--</span> km/h</div>
+    <div>Lat: <span id="lat">--</span></div>
+    <div>Lon: <span id="lon">--</span></div>
+</div>
 
 <script type="text/javascript">
+
+    /* ---------------- MUSIC PLAYER ---------------- */
 
     function tryServers(base, callback) {
         var servers = ["ice1", "ice2", "ice3", "ice4", "ice5", "ice6"];
@@ -58,7 +116,7 @@
 
         function attempt() {
             if (index >= servers.length) {
-                callback(null); // all failed
+                callback(null);
                 return;
             }
 
@@ -72,12 +130,11 @@
 
             if (playPromise && playPromise.then) {
                 playPromise.then(function () {
-                    callback(url); // success
+                    callback(url);
                 }).catch(function () {
-                    attempt(); // try next server
+                    attempt();
                 });
             } else {
-                // Older Safari may not return a promise
                 callback(url);
             }
         }
@@ -85,11 +142,11 @@
         attempt();
     }
 
-    function playCliqhop() {
+    function playStation(streamName) {
         var status = document.getElementById("status");
-        status.innerHTML = "Trying servers for Cliqhop…";
+        status.innerHTML = "Trying servers…";
 
-        tryServers("cliqhop-128-mp3", function (url) {
+        tryServers(streamName, function (url) {
             if (url) {
                 status.innerHTML = "Playing: " + url;
             } else {
@@ -98,17 +155,49 @@
         });
     }
 
-    function playGrooveSalad() {
-        var status = document.getElementById("status");
-        status.innerHTML = "Trying servers for Groove Salad…";
+    function stopPlayback() {
+        var audio = document.getElementById("player");
+        audio.pause();
+        audio.src = "";
+        document.getElementById("status").innerHTML = "Stopped";
+    }
 
-        tryServers("groovesalad-256-mp3", function (url) {
-            if (url) {
-                status.innerHTML = "Playing: " + url;
-            } else {
-                status.innerHTML = "Unable to play this stream.";
-            }
-        });
+    document.getElementById("volumeControl").addEventListener("input", function () {
+        var audio = document.getElementById("player");
+        audio.volume = this.value;
+    });
+
+
+    /* ---------------- GPS + SPEED ---------------- */
+
+    function updateGPS(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        var speed = position.coords.speed;
+
+        if (speed === null) {
+            speed = 0;
+        }
+
+        var kmh = (speed * 3.6).toFixed(1);
+
+        document.getElementById("lat").innerHTML = lat.toFixed(6);
+        document.getElementById("lon").innerHTML = lon.toFixed(6);
+        document.getElementById("speed").innerHTML = kmh;
+    }
+
+    function gpsError(err) {
+        document.getElementById("speed").innerHTML = "--";
+        document.getElementById("lat").innerHTML = "--";
+        document.getElementById("lon").innerHTML = "--";
+    }
+
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(
+            updateGPS,
+            gpsError,
+            { enableHighAccuracy: true, maximumAge: 0 }
+        );
     }
 
 </script>
