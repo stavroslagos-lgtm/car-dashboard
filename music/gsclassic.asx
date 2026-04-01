@@ -1,0 +1,33 @@
+<ASX version="3.0">
+<repeat>
+	<entry>
+		<ref href="http://ice2.somafm.com/gsclassic-128-mp3" />
+		<PARAM name="HTMLView" value="http://somafm.com/wma128/?gsclassic"/>
+		<Abstract>Loading: Groove Salad Classic from SomaFM.com</abstract> 
+		<Title>SomaFM: Groove Salad Classic</Title> 
+		<Author>Keep us on the air! Click Support SomaFM above!</Author>
+	</entry>
+	<entry>
+		<ref href="http://ice6.somafm.com/gsclassic-128-mp3" />
+		<PARAM name="HTMLView" value="http://somafm.com/wma128/?gsclassic"/>
+		<Abstract>Loading: Groove Salad Classic from SomaFM.com</abstract> 
+		<Title>SomaFM: Groove Salad Classic</Title> 
+		<Author>Keep us on the air! Click Support SomaFM above!</Author>
+	</entry>
+	<entry>
+		<ref href="http://ice4.somafm.com/gsclassic-128-mp3" />
+		<PARAM name="HTMLView" value="http://somafm.com/wma128/?gsclassic"/>
+		<Abstract>Loading: Groove Salad Classic from SomaFM.com</abstract> 
+		<Title>SomaFM: Groove Salad Classic</Title> 
+		<Author>Keep us on the air! Click Support SomaFM above!</Author>
+	</entry>
+	<entry>
+		<ref href="http://ice1.somafm.com/gsclassic-128-mp3" />
+		<PARAM name="HTMLView" value="http://somafm.com/wma128/?gsclassic"/>
+		<Abstract>Loading: Groove Salad Classic from SomaFM.com</abstract> 
+		<Title>SomaFM: Groove Salad Classic</Title> 
+		<Author>Keep us on the air! Click Support SomaFM above!</Author>
+	</entry>
+</repeat>
+</ASX>
+

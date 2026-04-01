@@ -1,0 +1,33 @@
+<ASX version="3.0">
+<repeat>
+	<entry>
+		<ref href="http://ice6.somafm.com/vaporwaves-128-mp3" />
+		<PARAM name="HTMLView" value="http://somafm.com/wma128/?vaporwaves"/>
+		<Abstract>Loading: Vaporwaves from SomaFM.com</abstract> 
+		<Title>SomaFM: Vaporwaves</Title> 
+		<Author>Keep us on the air! Click Support SomaFM above!</Author>
+	</entry>
+	<entry>
+		<ref href="http://ice4.somafm.com/vaporwaves-128-mp3" />
+		<PARAM name="HTMLView" value="http://somafm.com/wma128/?vaporwaves"/>
+		<Abstract>Loading: Vaporwaves from SomaFM.com</abstract> 
+		<Title>SomaFM: Vaporwaves</Title> 
+		<Author>Keep us on the air! Click Support SomaFM above!</Author>
+	</entry>
+	<entry>
+		<ref href="http://ice2.somafm.com/vaporwaves-128-mp3" />
+		<PARAM name="HTMLView" value="http://somafm.com/wma128/?vaporwaves"/>
+		<Abstract>Loading: Vaporwaves from SomaFM.com</abstract> 
+		<Title>SomaFM: Vaporwaves</Title> 
+		<Author>Keep us on the air! Click Support SomaFM above!</Author>
+	</entry>
+	<entry>
+		<ref href="http://ice1.somafm.com/vaporwaves-128-mp3" />
+		<PARAM name="HTMLView" value="http://somafm.com/wma128/?vaporwaves"/>
+		<Abstract>Loading: Vaporwaves from SomaFM.com</abstract> 
+		<Title>SomaFM: Vaporwaves</Title> 
+		<Author>Keep us on the air! Click Support SomaFM above!</Author>
+	</entry>
+</repeat>
+</ASX>
+

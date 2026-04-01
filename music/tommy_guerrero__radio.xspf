@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<playlist xmlns="http://xspf.org/ns/0/" xmlns:vlc="http://www.videolan.org/vlc/playlist/ns/0/" version="1">
+	<title>Λίστα αναπαραγωγής</title>
+	<trackList>
+		<track>
+			<location>https://rr1---sn-fpoqixaa5n-5uid.googlevideo.com/videoplayback?expire=1716551290&amp;ei=GipQZvmiFtyC6dsPkoGDaA&amp;ip=45.153.183.15&amp;id=o-AL_quthcIPA4qctXf34iQd7qTDl8NPHGODVAvo4r-mUA&amp;itag=18&amp;source=youtube&amp;requiressl=yes&amp;xpc=EgVo2aDSNQ%3D%3D&amp;mh=6q&amp;mm=31%2C29&amp;mn=sn-fpoqixaa5n-5uid%2Csn-nv47lns7&amp;ms=au%2Crdu&amp;mv=m&amp;mvi=1&amp;pcm2cms=yes&amp;pl=23&amp;initcwndbps=1076250&amp;bui=AWRWj2SvR-Z3gNqB2zybRP2DyWioTDQ0hmLb3m2DJHgsYhq_uNEsMGOueKMq_Vdv8AtcxiG3PmEZMGiK&amp;spc=UWF9f_-k0ry94C9hP7gumQVCLlNA-9Ju3S2W2dUWwCLdQg5ormy5Txb2qJif&amp;vprv=1&amp;svpuc=1&amp;mime=video%2Fmp4&amp;ns=iRryV6z5Qm_mR86F-zvWbQYQ&amp;rqh=1&amp;cnr=14&amp;ratebypass=yes&amp;dur=2890.745&amp;lmt=1709329385298901&amp;mt=1716529250&amp;fvip=4&amp;c=WEB&amp;sefc=1&amp;txp=4538434&amp;n=Q8dknk4oGS-c42CLy&amp;sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Ccnr%2Cratebypass%2Cdur%2Clmt&amp;lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpcm2cms%2Cpl%2Cinitcwndbps&amp;lsig=AHWaYeowRgIhAMeUFWaIvjiIHEw4BgN3KlsGLIkUqptHXG6qVGEipewdAiEAmfctJn2_uZwoDks5sr8SG7AMCrSsjAAOAvpJvNVsqx4%3D&amp;sig=AJfQdSswRgIhALpUnSPWPSiKkyedR4EJhyBVH6tPprTtZRHhiyrCb_5yAiEAhM81w5e-l0DCKQha-zpgtiuDrIG86o1_ncvtM3hx9YI%3D</location>
+			<title>Tommy Guerrero - Road to Knowhere [Full Album]</title>
+			<creator>Proved Records</creator>
+			<annotation>Support the artist by purchasing the record here:
+https://tommy-guerrero-too-good.bandcamp.com/album/road-to-knowhere
+
+Support the channel on Patreon:
+https://www.patreon.com/provoedu
+
+Tracklist:
+1.El Camino Negro  
+2.White Sands  
+3.Highway Hustle 
+4.Los Padres  
+5.Headin&#39; West  
+6.Silent Miles  
+7.Heat in the Streets 
+8.Sidewalk Soul  
+9.Slow Roll  
+10.Postcard Home  
+11.A Distant Closeness  
+12.Where Water Once Was  
+13.The Endless Road
+
+💸 If you follow the channel &amp; want to support our cause, donations are highly appreciated:
+https://www.paypal.me/ProvedRecords</annotation>
+			<info>https://www.youtube.com/watch?v=N0LZ20ppkNo</info>
+			<image>file:///C:/Users/slagos/AppData/Roaming/vlc/art/arturl/84038e7076a7c9765ee427bba7787421/art</image>
+			<duration>2890698</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>0</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>http://ice2.somafm.com/groovesalad-128-mp3</location>
+			<title>Groove Salad: a nicely chilled plate of ambient beats and grooves. [SomaFM]</title>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>1</vlc:id>
+				<vlc:option>file-caching=1000</vlc:option>
+			</extension>
+		</track>
+		<track>
+			<location>http://ice6.somafm.com/groovesalad-128-mp3</location>
+			<title>Groove Salad: a nicely chilled plate of ambient beats and grooves. [SomaFM]</title>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>2</vlc:id>
+				<vlc:option>file-caching=1000</vlc:option>
+			</extension>
+		</track>
+		<track>
+			<location>http://ice4.somafm.com/groovesalad-128-mp3</location>
+			<title>Groove Salad: a nicely chilled plate of ambient beats and grooves. [SomaFM]</title>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>3</vlc:id>
+				<vlc:option>file-caching=1000</vlc:option>
+			</extension>
+		</track>
+		<track>
+			<location>http://ice1.somafm.com/groovesalad-128-mp3</location>
+			<title>Groove Salad: a nicely chilled plate of ambient beats and grooves. [SomaFM]</title>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>4</vlc:id>
+				<vlc:option>file-caching=1000</vlc:option>
+			</extension>
+		</track>
+		<track>
+			<location>https://rr4---sn-fpoqixaa5n-5uil.googlevideo.com/videoplayback?expire=1716553444&amp;ei=hDJQZrWiCYrni9oPwfycmAQ&amp;ip=45.153.183.15&amp;id=o-AEo_dk53u1p2_b-dx-X5QattgKfKbEo2JJ4evGR0eG4_&amp;itag=18&amp;source=youtube&amp;requiressl=yes&amp;xpc=EgVo2aDSNQ%3D%3D&amp;mh=eg&amp;mm=31%2C29&amp;mn=sn-fpoqixaa5n-5uil%2Csn-nv47lns7&amp;ms=au%2Crdu&amp;mv=m&amp;mvi=4&amp;pl=23&amp;initcwndbps=915000&amp;bui=AWRWj2S9wP20RocRcOkYi0K80GhloofGgCgMNiXQNWspkdTiMDvfM-WVsT62IhDFtIV3f0TFDJyL9KQD&amp;spc=UWF9fwmi8NPhqgbVc7ygRxOiPWkCpXlEgKexN_d51do1nS5blBIdA5LC6EhU&amp;vprv=1&amp;svpuc=1&amp;mime=video%2Fmp4&amp;ns=CGTmEzgp4d-hq4T_1BAr2NgQ&amp;rqh=1&amp;cnr=14&amp;ratebypass=yes&amp;dur=5154.713&amp;lmt=1699004546816538&amp;mt=1716531642&amp;fvip=2&amp;c=WEB&amp;sefc=1&amp;txp=5438434&amp;n=zwBRx_xKGtKlg-z3N&amp;sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Ccnr%2Cratebypass%2Cdur%2Clmt&amp;lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&amp;lsig=AHWaYeowRQIhALnl_sVLRVcE4MTLzSBnl95W5yV9ypTKZgRY07zjayXvAiAtVuBr6akmN0hyu9uLDYl0_vnsVmhVbk9b-9xNwNaeag%3D%3D&amp;sig=AJfQdSswRgIhAN9NNDe5E4N6TaoWMYL-Nuq1AzvOcM863_Mo4Q2IVm0wAiEAzEfsyRY2odDKxpZBagjuB6Px7BRxLpzpgWKEiT2fPWU%3D</location>
+			<title>Best post-rock songs of 2022</title>
+			<creator>Worldhaspostrock</creator>
+			<annotation>Happy new year.
+
+artwork: https://wallhaven.cc/w/eyddko
+
+Tracklist:
+1. Amalunga - From the Moment We Are Born, We Begin To Die 00:00
+https://amalunga.bandcamp.com/album/we-are-stardust-this-is-our-sound
+
+2. Ef - Apricity 5:19
+https://efmusicsweden.bandcamp.com/album/we-salute-you-you-and-you
+
+3. Passage - L&#39;Éveil 13:09
+https://passageofficial.bandcamp.com/album/voyage
+
+4. Non Somnia - Lullaby for Noa(pt.1) 24:03
+https://nonsomnia.bandcamp.com/album/gehenna
+
+5. Darkfield - A World Without 30:00
+https://darkfieldmusic.bandcamp.com/album/reanimated-voices
+
+6. indignu - devolução da essência do ser 33:44
+https://indignu.bandcamp.com/album/adeus
+
+7. Mordwand - Adrift Upon the Sleepless River 48:07
+https://mordwand.bandcamp.com
+
+8. Star of Heaven - The Eye 54:56
+https://starofheaven.bandcamp.com/track/the-eye
+
+9. How The World Became The Bomb - Per Aspera Ad Astra 1:01:25
+https://htwbtb.bandcamp.com/album/y-gen
+
+10. Carved Into the Sun - Hexis 1:12:19
+https://carvedintothesun.bandcamp.com/album/the-earth-fell-away
+
+11. Vishal Naidu - Enchanted Creek 1:20:59
+https://vishalnaidu.bandcamp.com/album/fragments-of-serenity
+-
+🔴 Help me to keep channel alive: http://bit.ly/whprpatreon
+🔵 Follow Worldhaspostrock on Instagram: http://bit.ly/whprig
+🎵 Follow our Spotify playlist: https://spoti.fi/2JuD7Vx
+🎧 Join our post-rock community on Discord: https://bit.ly/whprdiscord
+-
+🔶 To submit your music: submitwhpr@gmail.com
+⚫ For removal of copyrighted music: submitwhpr@gmail.com</annotation>
+			<info>https://www.youtube.com/watch?v=a35YnD_A5mA&amp;t=3410s</info>
+			<image>file:///C:/Users/slagos/AppData/Roaming/vlc/art/arturl/9cbb3366849a76e6462f869fed559b36/art</image>
+			<duration>5154667</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>5</vlc:id>
+			</extension>
+		</track>
+	</trackList>
+	<extension application="http://www.videolan.org/vlc/playlist/0">
+		<vlc:item tid="0"/>
+		<vlc:item tid="1"/>
+		<vlc:item tid="2"/>
+		<vlc:item tid="3"/>
+		<vlc:item tid="4"/>
+		<vlc:item tid="5"/>
+	</extension>
+</playlist>
