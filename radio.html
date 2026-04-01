@@ -2,10 +2,11 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Greek Radio Player + GPS</title>
+    <title>Greek Radio Player — Horizontal Row</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
+        /* Basic page */
         body {
             margin: 0;
             padding: 10px;
@@ -15,82 +16,139 @@
             text-align: center;
         }
 
+        h2 {
+            margin: 6px 0 12px 0;
+            font-weight: normal;
+        }
+
+        /* Audio + controls */
         #player {
             width: 95%;
-            max-width: 600px;
-            margin: 10px auto 10px auto;
+            max-width: 900px;
+            margin: 6px auto;
             display: block;
         }
 
         #volumeControl {
             width: 90%;
-            max-width: 400px;
-            margin: 10px auto 20px auto;
+            max-width: 420px;
+            margin: 10px auto 18px auto;
+            display: block;
         }
 
-        .tile-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+        /* Horizontal tile row container */
+        .row-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto 12px auto;
+            box-sizing: border-box;
         }
 
+        /* Arrow buttons */
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.45);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #fff;
+            font-size: 22px;
+            line-height: 44px;
+            text-align: center;
+            cursor: pointer;
+            z-index: 10;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .arrow:active { transform: translateY(-50%) scale(0.98); }
+
+        .arrow-left { left: 6px; }
+        .arrow-right { right: 6px; }
+
+        /* Scrollable row */
+        .tile-row {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            white-space: nowrap;
+            padding: 10px 56px; /* leave space for arrows */
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        /* Each tile (inline-block so they stay in one row) */
         .tile {
-            width: 30%;
-            margin: 1%;
+            display: inline-block;
+            vertical-align: top;
+            width: 28%;
+            max-width: 220px;
+            min-width: 160px;
+            margin-right: 12px;
             background: #222;
             border-radius: 12px;
             padding: 10px;
             box-sizing: border-box;
             cursor: pointer;
+            text-align: center;
         }
 
-        .tile:hover {
-            background: #333;
+        /* Make tiles visually consistent on small screens */
+        @media (max-width: 640px) {
+            .tile { width: 70%; min-width: 260px; margin-right: 14px; }
         }
 
         .tile img {
             width: 100%;
-            height: 100px;
+            height: 110px;
             object-fit: contain;
+            display: block;
             margin-bottom: 8px;
         }
 
         .tile span {
             display: block;
             font-size: 1em;
-            padding-bottom: 5px;
+            color: #fff;
+            padding-bottom: 4px;
         }
 
+        .tile:active { transform: scale(0.995); }
+
+        /* Stop button */
         #stopBtn {
-            margin-top: 15px;
-            padding: 15px 30px;
+            margin-top: 8px;
+            padding: 12px 26px;
             background: #660000;
             border: 1px solid #aa0000;
             border-radius: 10px;
             color: #fff;
-            font-size: 1.2em;
+            font-size: 1.05em;
             cursor: pointer;
         }
 
-        #stopBtn:hover {
-            background: #880000;
-        }
+        #stopBtn:active { transform: scale(0.99); }
 
         #status {
-            margin-top: 15px;
+            margin-top: 12px;
             color: #aaa;
+            font-size: 0.95em;
         }
 
+        /* GPS box */
         #gpsBox {
-            margin-top: 25px;
-            padding: 15px;
+            margin-top: 18px;
+            padding: 12px;
             background: #222;
             border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
+            width: 92%;
+            max-width: 720px;
             margin-left: auto;
             margin-right: auto;
-            font-size: 1.1em;
+            font-size: 1.05em;
+            color: #ddd;
         }
     </style>
 </head>
@@ -102,48 +160,54 @@
 
 <input id="volumeControl" type="range" min="0" max="1" step="0.01" value="1">
 
-<div class="tile-grid">
+<!-- Horizontal row with arrows -->
+<div class="row-wrap">
+    <button id="leftArrow" class="arrow arrow-left" aria-label="Scroll left">&#9664;</button>
 
-    <div class="tile" onclick="playStation('http://sportfm.live24.gr/sportfm7712')">
-        <img src="i_turn0image151">
-        <span>Sport FM 94.6</span>
+    <div id="tileRow" class="tile-row" role="list" tabindex="0" aria-label="Stations">
+        <!-- Replace img src values with your real logo URLs or RefIds -->
+        <div class="tile" role="listitem" onclick="playStation('http://sportfm.live24.gr/sportfm7712')">
+            <img src="i_turn0image151" alt="Sport FM logo">
+            <span>Sport FM 94.6</span>
+        </div>
+
+        <div class="tile" role="listitem" onclick="playStation('http://stream.radiojar.com/melodia992')">
+            <img src="i_turn0image1" alt="Melodia logo">
+            <span>Melodia 99.2</span>
+        </div>
+
+        <div class="tile" role="listitem" onclick="playStation('http://stream.radiojar.com/enlefko877')">
+            <img src="i_turn0image121" alt="En Lefko logo">
+            <span>En Lefko 87.7</span>
+        </div>
+
+        <div class="tile" role="listitem" onclick="playStation('http://stream.radiojar.com/pepper966')">
+            <img src="i_turn0image31" alt="Pepper logo">
+            <span>Pepper 96.6</span>
+        </div>
+
+        <div class="tile" role="listitem" onclick="playStation('http://rockfm.live24.gr/rockfm')">
+            <img src="i_turn0image61" alt="Rock FM logo">
+            <span>Rock FM 96.9</span>
+        </div>
+
+        <div class="tile" role="listitem" onclick="playStation('http://stream.radiojar.com/red963')">
+            <img src="i_turn0image211" alt="Red FM logo">
+            <span>Red FM 96.3</span>
+        </div>
+
+        <div class="tile" role="listitem" onclick="playStation('http://flyfm.gr:8000/stream')">
+            <img src="i_turn0image121" alt="Fly FM logo">
+            <span>Fly FM</span>
+        </div>
+
+        <div class="tile" role="listitem" onclick="playStation('http://eco.onestreaming.com:8032/stream')">
+            <img src="i_turn0image91" alt="Mousiko Kanali logo">
+            <span>Mousiko Kanali</span>
+        </div>
     </div>
 
-    <div class="tile" onclick="playStation('http://stream.radiojar.com/melodia992')">
-        <img src="i_turn0image1">
-        <span>Melodia 99.2</span>
-    </div>
-
-    <div class="tile" onclick="playStation('http://stream.radiojar.com/enlefko877')">
-        <img src="i_turn0image121">
-        <span>En Lefko 87.7</span>
-    </div>
-
-    <div class="tile" onclick="playStation('https://stream.radiojar.com/pepper')">
-        <img src="https://cdn.radoxo.com/images/greece/pepper.webp">
-        <span>Pepper 96.6</span>
-    </div>
-
-    <div class="tile" onclick="playStation('https://stream.rcs.revma.com/sm9b1svehkcwv')">
-        <img src="https://cdn.radoxo.com/images/greece/rock-fm.webp?v=1775037601">
-        <span>Rock FM 96.9</span>
-    </div>
-
-    <div class="tile" onclick="playStation('http://stream.radiojar.com/red963')">
-        <img src="i_turn0image211">
-        <span>Red FM 96.3</span>
-    </div>
-
-    <div class="tile" onclick="playStation('http://flyfm.gr:8000/stream')">
-        <img src="i_turn0image121">
-        <span>Fly FM</span>
-    </div>
-
-    <div class="tile" onclick="playStation('http://eco.onestreaming.com:8032/stream')">
-        <img src="i_turn0image91">
-        <span>Mousiko Kanali</span>
-    </div>
-
+    <button id="rightArrow" class="arrow arrow-right" aria-label="Scroll right">&#9654;</button>
 </div>
 
 <button id="stopBtn" onclick="stopPlayback()">STOP</button>
@@ -157,39 +221,129 @@
 </div>
 
 <script type="text/javascript">
+    /* ES5-compatible JavaScript */
 
+    // Play station by URL
     function playStation(url) {
-        var audio = document.getElementById("player");
+        var audio = document.getElementById('player');
         audio.src = url;
 
-        var status = document.getElementById("status");
-        status.innerHTML = "Loading…";
+        var status = document.getElementById('status');
+        status.innerHTML = 'Loading…';
 
-        var playPromise = audio.play();
+        try {
+            var playPromise = audio.play();
 
-        if (playPromise && playPromise.then) {
-            playPromise.then(function () {
-                status.innerHTML = "Playing: " + url;
-            }).catch(function () {
-                status.innerHTML = "Unable to play this stream.";
-            });
-        } else {
-            status.innerHTML = "Playing: " + url;
+            if (playPromise && playPromise.then) {
+                playPromise.then(function () {
+                    status.innerHTML = 'Playing: ' + url;
+                }).catch(function () {
+                    status.innerHTML = 'Unable to play this stream.';
+                });
+            } else {
+                status.innerHTML = 'Playing: ' + url;
+            }
+        } catch (e) {
+            status.innerHTML = 'Playback error';
         }
     }
 
+    // Stop playback
     function stopPlayback() {
-        var audio = document.getElementById("player");
+        var audio = document.getElementById('player');
         audio.pause();
-        audio.src = "";
-        document.getElementById("status").innerHTML = "Stopped";
+        audio.src = '';
+        document.getElementById('status').innerHTML = 'Stopped';
     }
 
-    document.getElementById("volumeControl").addEventListener("input", function () {
-        var audio = document.getElementById("player");
+    // Volume control
+    document.getElementById('volumeControl').addEventListener('input', function () {
+        var audio = document.getElementById('player');
         audio.volume = this.value;
     });
 
+    /* Horizontal scroll controls */
+    (function () {
+        var row = document.getElementById('tileRow');
+        var left = document.getElementById('leftArrow');
+        var right = document.getElementById('rightArrow');
+
+        // Amount to scroll per arrow click (one tile width approx)
+        function scrollAmount() {
+            // compute approx tile width (first tile)
+            var first = row.querySelector('.tile');
+            if (!first) return 200;
+            return Math.round(first.getBoundingClientRect().width + 12); // tile + gap
+        }
+
+        left.addEventListener('click', function () {
+            row.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+        });
+
+        right.addEventListener('click', function () {
+            row.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+        });
+
+        // Drag-to-scroll for desktop (mouse) and touch (mobile)
+        var isDown = false;
+        var startX;
+        var scrollLeftStart;
+
+        row.addEventListener('mousedown', function (e) {
+            isDown = true;
+            row.classList.add('active');
+            startX = e.pageX - row.offsetLeft;
+            scrollLeftStart = row.scrollLeft;
+            e.preventDefault();
+        });
+
+        row.addEventListener('mouseleave', function () {
+            isDown = false;
+            row.classList.remove('active');
+        });
+
+        row.addEventListener('mouseup', function () {
+            isDown = false;
+            row.classList.remove('active');
+        });
+
+        row.addEventListener('mousemove', function (e) {
+            if (!isDown) return;
+            var x = e.pageX - row.offsetLeft;
+            var walk = (x - startX) * 1; // scroll-fast multiplier
+            row.scrollLeft = scrollLeftStart - walk;
+        });
+
+        // Touch events
+        var touchStartX = 0;
+        var touchScrollLeft = 0;
+
+        row.addEventListener('touchstart', function (e) {
+            if (e.touches.length !== 1) return;
+            touchStartX = e.touches[0].pageX;
+            touchScrollLeft = row.scrollLeft;
+        }, { passive: true });
+
+        row.addEventListener('touchmove', function (e) {
+            if (e.touches.length !== 1) return;
+            var x = e.touches[0].pageX;
+            var walk = (x - touchStartX) * 1;
+            row.scrollLeft = touchScrollLeft - walk;
+        }, { passive: true });
+
+        // Keyboard accessibility: left/right arrows when row focused
+        row.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowLeft' || e.keyCode === 37) {
+                row.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+                e.preventDefault();
+            } else if (e.key === 'ArrowRight' || e.keyCode === 39) {
+                row.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+                e.preventDefault();
+            }
+        });
+    }());
+
+    /* GPS + SPEED (same as before) */
     function updateGPS(position) {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
@@ -199,15 +353,15 @@
 
         var kmh = (speed * 3.6).toFixed(1);
 
-        document.getElementById("lat").innerHTML = lat.toFixed(6);
-        document.getElementById("lon").innerHTML = lon.toFixed(6);
-        document.getElementById("speed").innerHTML = kmh;
+        document.getElementById('lat').innerHTML = lat.toFixed(6);
+        document.getElementById('lon').innerHTML = lon.toFixed(6);
+        document.getElementById('speed').innerHTML = kmh;
     }
 
     function gpsError(err) {
-        document.getElementById("speed").innerHTML = "--";
-        document.getElementById("lat").innerHTML = "--";
-        document.getElementById("lon").innerHTML = "--";
+        document.getElementById('speed').innerHTML = '--';
+        document.getElementById('lat').innerHTML = '--';
+        document.getElementById('lon').innerHTML = '--';
     }
 
     if (navigator.geolocation) {
@@ -217,7 +371,6 @@
             { enableHighAccuracy: true, maximumAge: 0 }
         );
     }
-
 </script>
 
 </body>
