@@ -47,43 +47,35 @@
 
 <h1>Music Player</h1>
 
-<button class="btn" onclick="playTrack('https://ice2.somafm.com/groovesalad-256-mp3')">Cliqhop</button>
-<button class="btn" onclick="playTrack('https://ice3.somafm.com/groovesalad-256-mp3')">Defcon</button>
-<button class="btn" onclick="playTrack('https://ice4.somafm.com/groovesalad-256-mp3')">Digitalis</button>
-<button class="btn" onclick="playTrack('https://ice5.somafm.com/groovesalad-256-mp3')">Groove Salad</button>
-<button class="btn" onclick="playTrack('https://ice6.somafm.com/groovesalad-256-mp3')">GS Classic</button>
-<button class="btn" onclick="playTrack('http://ice1.somafm.com/specials-128-mp3')">Specials</button>
-<button class="btn" onclick="playTrack('https://somafm.com/m3u/vaporwaves130.m3u')">Vaporwaves</button>
-<button class="btn" onclick="playTrack('https://somafm.com/m3u/specials130.m3u')">Soma FM Specials</button>
-<button class="btn" onclick="playTrack('https://somafm.com/m3u/live130.m3u')">Soma FM Live</button>
+<button class="btn" onclick="playTrack('http://ice6.somafm.com/cliqhop-128-mp3')">
+    Cliqhop IDM
+</button>
+
+<button class="btn" onclick="playTrack('https://ice6.somafm.com/groovesalad-256-mp3')">
+    Groove Salad
+</button>
 
 <div id="status">Select a track to play</div>
 
-<!-- Hidden audio element -->
 <audio id="player" controls style="width:90%; max-width:300px; margin-top:20px;"></audio>
 
 <script type="text/javascript">
-    function playTrack(filename) {
+    function playTrack(url) {
         var audio = document.getElementById("player");
         var status = document.getElementById("status");
 
-        // Build path to music folder
-        var path = "music/" + filename;
+        audio.src = url;
 
-        // Set audio source
-        audio.src = path;
-
-        // Try to play
         var playPromise = audio.play();
 
         if (playPromise && playPromise.then) {
             playPromise.then(function () {
-                status.innerHTML = "Playing: " + filename;
+                status.innerHTML = "Playing: " + url;
             }).catch(function () {
-                status.innerHTML = "Unable to play this file on this device.";
+                status.innerHTML = "Unable to play this stream on this device.";
             });
         } else {
-            status.innerHTML = "Playing: " + filename;
+            status.innerHTML = "Playing: " + url;
         }
     }
 </script>
