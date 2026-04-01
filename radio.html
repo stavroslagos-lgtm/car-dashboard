@@ -28,31 +28,48 @@
             margin: 10px auto 20px auto;
         }
 
-        .button-row {
+        .tile-grid {
             display: flex;
             flex-wrap: wrap;
-            width: 100%;
+            justify-content: center;
         }
 
-        .btn {
-            flex: 1 1 30%;
-            margin: 8px;
-            padding: 20px 5px;
-            background: #333;
-            color: #fff;
-            border: 1px solid #555;
-            border-radius: 10px;
-            font-size: 1.1em;
+        .tile {
+            width: 30%;
+            margin: 1%;
+            background: #222;
+            border-radius: 12px;
+            padding: 10px;
+            box-sizing: border-box;
             cursor: pointer;
         }
 
-        .btn:hover {
-            background: #444;
+        .tile:hover {
+            background: #333;
+        }
+
+        .tile img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 8px;
+        }
+
+        .tile span {
+            display: block;
+            font-size: 1em;
+            padding-bottom: 5px;
         }
 
         #stopBtn {
+            margin-top: 15px;
+            padding: 15px 30px;
             background: #660000;
-            border-color: #aa0000;
+            border: 1px solid #aa0000;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
         }
 
         #stopBtn:hover {
@@ -85,22 +102,54 @@
 
 <input id="volumeControl" type="range" min="0" max="1" step="0.01" value="1">
 
-<div class="button-row">
-    <button class="btn" onclick="playStation('http://sportfm.live24.gr/sportfm7712')">Sport FM 94.6</button>
-    <button class="btn" onclick="playStation('http://stream.radiojar.com/melodia992')">Melodia 99.2</button>
-    <button class="btn" onclick="playStation('http://stream.radiojar.com/enlefko877')">En Lefko 87.7</button>
-    <button class="btn" onclick="playStation('http://stream.radiojar.com/pepper966')">Pepper 96.6</button>
-    <button class="btn" onclick="playStation('http://rockfm.live24.gr/rockfm')">Rock FM 96.9</button>
-    <button class="btn" onclick="playStation('http://stream.radiojar.com/red963')">Red FM 96.3</button>
-    <button class="btn" onclick="playStation('http://flyfm.gr:8000/stream')">Fly FM</button>
-    <button class="btn" onclick="playStation('http://eco.onestreaming.com:8032/stream')">Mousiko Kanali</button>
+<div class="tile-grid">
+
+    <div class="tile" onclick="playStation('http://sportfm.live24.gr/sportfm7712')">
+        <img src="i_turn0image151">
+        <span>Sport FM 94.6</span>
+    </div>
+
+    <div class="tile" onclick="playStation('http://stream.radiojar.com/melodia992')">
+        <img src="i_turn0image1">
+        <span>Melodia 99.2</span>
+    </div>
+
+    <div class="tile" onclick="playStation('http://stream.radiojar.com/enlefko877')">
+        <img src="i_turn0image121">
+        <span>En Lefko 87.7</span>
+    </div>
+
+    <div class="tile" onclick="playStation('http://stream.radiojar.com/pepper966')">
+        <img src="i_turn0image31">
+        <span>Pepper 96.6</span>
+    </div>
+
+    <div class="tile" onclick="playStation('http://rockfm.live24.gr/rockfm')">
+        <img src="i_turn0image61">
+        <span>Rock FM 96.9</span>
+    </div>
+
+    <div class="tile" onclick="playStation('http://stream.radiojar.com/red963')">
+        <img src="i_turn0image211">
+        <span>Red FM 96.3</span>
+    </div>
+
+    <div class="tile" onclick="playStation('http://flyfm.gr:8000/stream')">
+        <img src="i_turn0image121">
+        <span>Fly FM</span>
+    </div>
+
+    <div class="tile" onclick="playStation('http://eco.onestreaming.com:8032/stream')">
+        <img src="i_turn0image91">
+        <span>Mousiko Kanali</span>
+    </div>
+
 </div>
 
-<button id="stopBtn" class="btn" onclick="stopPlayback()">STOP</button>
+<button id="stopBtn" onclick="stopPlayback()">STOP</button>
 
 <div id="status">Select a station</div>
 
-<!-- GPS + SPEED INFO -->
 <div id="gpsBox">
     <div>Speed: <span id="speed">--</span> km/h</div>
     <div>Lat: <span id="lat">--</span></div>
@@ -108,8 +157,6 @@
 </div>
 
 <script type="text/javascript">
-
-    /* ---------------- RADIO PLAYER ---------------- */
 
     function playStation(url) {
         var audio = document.getElementById("player");
@@ -143,17 +190,12 @@
         audio.volume = this.value;
     });
 
-
-    /* ---------------- GPS + SPEED ---------------- */
-
     function updateGPS(position) {
         var lat = position.coords.latitude;
         var lon = position.coords.longitude;
         var speed = position.coords.speed;
 
-        if (speed === null) {
-            speed = 0;
-        }
+        if (speed === null) speed = 0;
 
         var kmh = (speed * 3.6).toFixed(1);
 
