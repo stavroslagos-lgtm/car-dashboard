@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Greek Radio Player + GPS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 10px;
+            background: #111;
+            color: #eee;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #player {
+            width: 95%;
+            max-width: 600px;
+            margin: 10px auto 10px auto;
+            display: block;
+        }
+
+        #volumeControl {
+            width: 90%;
+            max-width: 400px;
+            margin: 10px auto 20px auto;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .btn {
+            flex: 1 1 30%;
+            margin: 8px;
+            padding: 20px 5px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #444;
+        }
+
+        #stopBtn {
+            background: #660000;
+            border-color: #aa0000;
+        }
+
+        #stopBtn:hover {
+            background: #880000;
+        }
+
+        #status {
+            margin-top: 15px;
+            color: #aaa;
+        }
+
+        #gpsBox {
+            margin-top: 25px;
+            padding: 15px;
+            background: #222;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1em;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Greek Radio Player</h2>
+
+<audio id="player" controls></audio>
+
+<input id="volumeControl" type="range" min="0" max="1" step="0.01" value="1">
+
+<div class="button-row">
+    <button class="btn" onclick="playStation('http://sportfm.live24.gr/sportfm7712')">Sport FM 94.6</button>
+    <button class="btn" onclick="playStation('http://stream.radiojar.com/melodia992')">Melodia 99.2</button>
+    <button class="btn" onclick="playStation('http://stream.radiojar.com/enlefko877')">En Lefko 87.7</button>
+    <button class="btn" onclick="playStation('http://stream.radiojar.com/pepper966')">Pepper 96.6</button>
+    <button class="btn" onclick="playStation('http://rockfm.live24.gr/rockfm')">Rock FM 96.9</button>
+    <button class="btn" onclick="playStation('http://stream.radiojar.com/red963')">Red FM 96.3</button>
+    <button class="btn" onclick="playStation('http://flyfm.gr:8000/stream')">Fly FM</button>
+    <button class="btn" onclick="playStation('http://eco.onestreaming.com:8032/stream')">Mousiko Kanali</button>
+</div>
+
+<button id="stopBtn" class="btn" onclick="stopPlayback()">STOP</button>
+
+<div id="status">Select a station</div>
+
+<!-- GPS + SPEED INFO -->
+<div id="gpsBox">
+    <div>Speed: <span id="speed">--</span> km/h</div>
+    <div>Lat: <span id="lat">--</span></div>
+    <div>Lon: <span id="lon">--</span></div>
+</div>
+
+<script type="text/javascript">
+
+    /* ---------------- RADIO PLAYER ---------------- */
+
+    function playStation(url) {
+        var audio = document.getElementById("player");
+        audio.src = url;
+
+        var status = document.getElementById("status");
+        status.innerHTML = "Loading…";
+
+        var playPromise = audio.play();
+
+        if (playPromise && playPromise.then) {
+            playPromise.then(function () {
+                status.innerHTML = "Playing: " + url;
+            }).catch(function () {
+                status.innerHTML = "Unable to play this stream.";
+            });
+        } else {
+            status.innerHTML = "Playing: " + url;
+        }
+    }
+
+    function stopPlayback() {
+        var audio = document.getElementById("player");
+        audio.pause();
+        audio.src = "";
+        document.getElementById("status").innerHTML = "Stopped";
+    }
+
+    document.getElementById("volumeControl").addEventListener("input", function () {
+        var audio = document.getElementById("player");
+        audio.volume = this.value;
+    });
+
+
+    /* ---------------- GPS + SPEED ---------------- */
+
+    function updateGPS(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        var speed = position.coords.speed;
+
+        if (speed === null) {
+            speed = 0;
+        }
+
+        var kmh = (speed * 3.6).toFixed(1);
+
+        document.getElementById("lat").innerHTML = lat.toFixed(6);
+        document.getElementById("lon").innerHTML = lon.toFixed(6);
+        document.getElementById("speed").innerHTML = kmh;
+    }
+
+    function gpsError(err) {
+        document.getElementById("speed").innerHTML = "--";
+        document.getElementById("lat").innerHTML = "--";
+        document.getElementById("lon").innerHTML = "--";
+    }
+
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(
+            updateGPS,
+            gpsError,
+            { enableHighAccuracy: true, maximumAge: 0 }
+        );
+    }
+
+</script>
+
+</body>
+</html>
