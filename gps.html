@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>iPad GPS Speed & Position</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: #eee;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .value {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        .label {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        .error {
+            color: #ff6666;
+            margin-top: 15px;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>GPS Speed & Position</h1>
+
+    <div>
+        <div class="label">Speed</div>
+        <div id="speed" class="value">-- km/h</div>
+    </div>
+
+    <div>
+        <div class="label">Latitude</div>
+        <div id="lat" class="value">--</div>
+    </div>
+
+    <div>
+        <div class="label">Longitude</div>
+        <div id="lon" class="value">--</div>
+    </div>
+
+    <div class="status" id="status">Waiting for GPS...</div>
+    <div class="error" id="error"></div>
+</div>
+
+<script type="text/javascript">
+    // Update UI helpers
+    function setText(id, text) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.innerHTML = text;
+        }
+    }
+
+    // Convert m/s to km/h safely
+    function speedToKmh(speedMs) {
+        if (speedMs === null || typeof speedMs === "undefined") {
+            return 0;
+        }
+        return speedMs * 3.6;
+    }
+
+    // Called whenever we get a GPS update
+    function handlePosition(position) {
+        setText("status", "GPS signal OK");
+
+        var coords = position.coords;
+
+        // Position
+        setText("lat", coords.latitude.toFixed(6));
+        setText("lon", coords.longitude.toFixed(6));
+
+        // Speed (m/s -> km/h)
+        var speedMs = coords.speed; // may be null
+        var kmh = speedToKmh(speedMs);
+        setText("speed", kmh.toFixed(1) + " km/h");
+    }
+
+    // Called on GPS error
+    function handleError(error) {
+        var msg = "Unknown error";
+        if (error && typeof error.code !== "undefined") {
+            if (error.code === error.PERMISSION_DENIED) {
+                msg = "Permission denied. Enable location services for this page.";
+            } else if (error.code === error.POSITION_UNAVAILABLE) {
+                msg = "Position unavailable.";
+            } else if (error.code === error.TIMEOUT) {
+                msg = "GPS timeout.";
+            }
+        }
+        setText("status", "GPS error");
+        setText("error", msg);
+    }
+
+    function startGps() {
+        if (!navigator.geolocation) {
+            setText("status", "Geolocation not supported on this device.");
+            return;
+        }
+
+        setText("status", "Requesting GPS...");
+
+        // Continuous updates
+        navigator.geolocation.watchPosition(
+            handlePosition,
+            handleError,
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0,
+                timeout: 15000
+            }
+        );
+    }
+
+    // Start when page loads
+    (function () {
+        startGps();
+    })();
+</script>
+</body>
+</html>
