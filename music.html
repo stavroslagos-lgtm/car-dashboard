@@ -15,10 +15,6 @@
             text-align: center;
         }
 
-        h1 {
-            margin-bottom: 20px;
-        }
-
         .btn {
             display: block;
             width: 90%;
@@ -47,37 +43,74 @@
 
 <h1>Music Player</h1>
 
-<button class="btn" onclick="playTrack('http://ice6.somafm.com/cliqhop-128-mp3')">
-    Cliqhop IDM
-</button>
-
-<button class="btn" onclick="playTrack('https://ice6.somafm.com/groovesalad-256-mp3')">
-    Groove Salad
-</button>
+<button class="btn" onclick="playCliqhop()">Play Cliqhop</button>
+<button class="btn" onclick="playGrooveSalad()">Play Groove Salad</button>
 
 <div id="status">Select a track to play</div>
 
 <audio id="player" controls style="width:90%; max-width:300px; margin-top:20px;"></audio>
 
 <script type="text/javascript">
-    function playTrack(url) {
-        var audio = document.getElementById("player");
-        var status = document.getElementById("status");
 
-        audio.src = url;
+    function tryServers(base, callback) {
+        var servers = ["ice1", "ice2", "ice3", "ice4", "ice5", "ice6"];
+        var index = 0;
 
-        var playPromise = audio.play();
+        function attempt() {
+            if (index >= servers.length) {
+                callback(null); // all failed
+                return;
+            }
 
-        if (playPromise && playPromise.then) {
-            playPromise.then(function () {
-                status.innerHTML = "Playing: " + url;
-            }).catch(function () {
-                status.innerHTML = "Unable to play this stream on this device.";
-            });
-        } else {
-            status.innerHTML = "Playing: " + url;
+            var url = "https://" + servers[index] + ".somafm.com/" + base;
+            index++;
+
+            var audio = document.getElementById("player");
+            audio.src = url;
+
+            var playPromise = audio.play();
+
+            if (playPromise && playPromise.then) {
+                playPromise.then(function () {
+                    callback(url); // success
+                }).catch(function () {
+                    attempt(); // try next server
+                });
+            } else {
+                // Older Safari may not return a promise
+                callback(url);
+            }
         }
+
+        attempt();
     }
+
+    function playCliqhop() {
+        var status = document.getElementById("status");
+        status.innerHTML = "Trying servers for Cliqhop…";
+
+        tryServers("cliqhop-128-mp3", function (url) {
+            if (url) {
+                status.innerHTML = "Playing: " + url;
+            } else {
+                status.innerHTML = "Unable to play this stream.";
+            }
+        });
+    }
+
+    function playGrooveSalad() {
+        var status = document.getElementById("status");
+        status.innerHTML = "Trying servers for Groove Salad…";
+
+        tryServers("groovesalad-256-mp3", function (url) {
+            if (url) {
+                status.innerHTML = "Playing: " + url;
+            } else {
+                status.innerHTML = "Unable to play this stream.";
+            }
+        });
+    }
+
 </script>
 
 </body>
