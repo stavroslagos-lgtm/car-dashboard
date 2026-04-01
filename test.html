@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>iPad Sensor Tester</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<style>
+  body {
+    margin: 0;
+    padding: 12px;
+    background: #0f1113;
+    color: #e6eef6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-align: center;
+  }
+
+  h2 { margin: 6px 0 12px 0; font-weight: 500; }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .btn {
+    background: #1f2937;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 14px 18px;
+    margin: 6px;
+    border-radius: 10px;
+    font-size: 16px;
+    min-width: 140px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn:active { transform: scale(0.99); }
+
+  .status-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .card {
+    background: #11151a;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 8px;
+    width: 46%;
+    min-width: 220px;
+    box-sizing: border-box;
+    border: 1px solid rgba(255,255,255,0.03);
+    text-align: left;
+  }
+
+  .card h3 { margin: 0 0 8px 0; font-size: 15px; color: #cfe8ff; }
+  .card .value { font-size: 14px; color: #dbeeff; }
+  .pass { color: #7ee787; font-weight: 600; }
+  .fail { color: #ff8b8b; font-weight: 600; }
+  .warn { color: #ffd27a; font-weight: 600; }
+
+  #log {
+    width: 96%;
+    max-width: 980px;
+    height: 180px;
+    margin: 12px auto;
+    padding: 10px;
+    background: #071018;
+    color: #bfe7ff;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.03);
+    overflow: auto;
+    font-family: monospace;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+
+  .small { font-size: 13px; color: #9fb6c9; }
+
+  @media (max-width: 640px) {
+    .card { width: 92%; }
+    .btn { min-width: 44%; }
+  }
+</style>
+</head>
+<body>
+
+<h2>iPad Sensor Tester</h2>
+
+<div class="controls">
+  <button id="btnStartAll" class="btn">Start All Tests</button>
+  <button id="btnStopAll" class="btn">Stop All</button>
+  <button id="btnRequestMotion" class="btn">Request Motion Permission</button>
+  <button id="btnCamera" class="btn">Test Camera</button>
+  <button id="btnMic" class="btn">Test Microphone</button>
+  <button id="btnCopyLog" class="btn">Copy Log</button>
+</div>
+
+<div class="status-grid">
+
+  <div class="card">
+    <h3>Accelerometer</h3>
+    <div class="value" id="accelVal">—</div>
+    <div class="small" id="accelStatus">Status: <span id="accelPass" class="warn">Not tested</span></div>
+  </div>
+
+  <div class="card">
+    <h3>Gyroscope</h3>
+    <div class="value" id="gyroVal">—</div>
+    <div class="small" id="gyroStatus">Status: <span id="gyroPass" class="warn">Not tested</span></div>
+  </div>
+
+  <div class="card">
+    <h3>Device Orientation</h3>
+    <div class="value" id="orientVal">—</div>
+    <div class="small" id="orientStatus">Status: <span id="orientPass" class="warn">Not tested</span></div>
+  </div>
+
+  <div class="card">
+    <h3>Magnetometer</h3>
+    <div class="value" id="magVal">—</div>
+    <div class="small" id="magStatus">Status: <span id="magPass" class="warn">Not tested</span></div>
+  </div>
+
+  <div class="card">
+    <h3>Barometer</h3>
+    <div class="value" id="baroVal">—</div>
+    <div class="small" id="baroStatus">Status: <span id="baroPass" class="warn">Not tested</span></div>
+  </div>
+
+  <div class="card">
+    <h3>Geolocation (GPS)</h3>
+    <div class="value" id="geoVal">—</div>
+    <div class="small" id="geoStatus">Status: <span id="geoPass" class="warn">Not tested</span></div>
+  </div>
+
+  <div class="card">
+    <h3>Camera</h3>
+    <div class="value" id="camVal">—</div>
+    <div class="small" id="camStatus">Status: <span id="camPass" class="warn">Not tested</span></div>
+  </div>
+
+  <div class="card">
+    <h3>Microphone</h3>
+    <div class="value" id="micVal">—</div>
+    <div class="small" id="micStatus">Status: <span id="micPass" class="warn">Not tested</span></div>
+  </div>
+
+  <div class="card">
+    <h3>Battery</h3>
+    <div class="value" id="batVal">—</div>
+    <div class="small" id="batStatus">
