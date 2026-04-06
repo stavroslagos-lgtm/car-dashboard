@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Accelerometer Live | iOS 10.3.3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, 'Helvetica Neue', Helvetica, 'Segoe UI', sans-serif;
+            background: #f2f2f2;
+            padding: 20px;
+            color: #1c1c1e;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+            overflow: hidden;
+            padding: 24px 20px 32px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            margin-bottom: 8px;
+            color: #000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sub {
+            font-size: 0.85rem;
+            color: #8e8e93;
+            border-bottom: 1px solid #e5e5ea;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .status-card {
+            background: #f8f9fc;
+            border-radius: 20px;
+            padding: 18px 16px;
+            margin-bottom: 24px;
+            border: 1px solid #e9e9ef;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .led {
+            width: 12px;
+            height: 12px;
+            border-radius: 12px;
+            background-color: #ff3b30;
+            box-shadow: 0 0 2px rgba(0,0,0,0.2);
+        }
+
+        .led.active {
+            background-color: #34c759;
+            box-shadow: 0 0 6px #34c75980;
+            animation: pulse 1.2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .status-text {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .permission-btn {
+            background-color: #007aff;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 44px;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 20px;
+            font-family: inherit;
+        }
+
+        .permission-btn:active {
+            background-color: #005fc1;
+            transform: scale(0.97);
+        }
+
+        .data-grid {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e9e9ef;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 14px 16px;
+            border-bottom: 1px solid #efeff4;
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-label {
+            font-size: 0.9rem;
+            color: #6c6c70;
+            font-weight: 500;
+        }
+
+        .data-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            color: #1c1c1e;
+            word-break: break-word;
+            text-align: right;
+        }
+
+        .vector-badge {
+            background: #e9e9ef;
+            border-radius: 40px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-left: 8px;
+        }
+
+        .footer-note {
+            font-size: 0.7rem;
+            color: #8e8e93;
+            text-align: center;
+            margin-top: 24px;
+            border-top: 1px solid #efeff4;
+            padding-top: 18px;
+        }
+
+        .error-message {
+            background: #ffe9e6;
+            border-left: 4px solid #ff3b30;
+            padding: 12px 14px;
+            border-radius: 14px;
+            margin: 16px 0;
+            font-size: 0.85rem;
+            color: #b33;
+        }
+
+        .warning-message {
+            background: #fff6e5;
+            border-left: 4px solid #ff9f0a;
+            padding: 12px 14px;
+            border-radius: 14px;
+            margin: 16px 0;
+            font-size: 0.85rem;
+            color: #b45f06;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            transform: none;
+        }
+
+        .graph-container {
+            margin-top: 20px;
+            background: #fafafc;
+            border-radius: 16px;
+            padding: 12px;
+            border: 1px solid #e9e9ef;
+        }
+
+        .graph-title {
+            font-size: 0.75rem;
+            color: #8e8e93;
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .bar-group {
+            display: flex;
+            gap: 12px;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 100px;
+            margin-top: 8px;
+        }
+
+        .bar-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bar-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #3a3a3e;
+        }
+
+        .bar-fill {
+            width: 100%;
+            background: #007aff;
+            border-radius: 8px;
+            transition: height 0.1s ease;
+            min-height: 4px;
+            max-height: 80px;
+        }
+
+        .bar-value {
+            font-size: 0.7rem;
+            font-family: monospace;
+            color: #1c1c1e;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px 16px;
+            }
+            .data-value {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <h1>
+        📊 Accelerometer
+        <span class="vector-badge">3‑axis</span>
+    </h1>
+    <div class="sub">Real‑time acceleration · iOS 10.3.3 compatible</div>
+
+    <div class="status-card" id="statusCard">
+        <div class="status-indicator">
+            <div class="led" id="ledIndicator"></div>
+            <span class="status-text" id="statusMessage">Waiting for permission</span>
+        </div>
+        <div id="permissionArea">
+            <button class="permission-btn" id="requestBtn">🎯 Request Accelerometer Access</button>
+        </div>
+        <div id="messageContainer"></div>
+    </div>
+
+    <div class="data-grid" id="dataGrid" style="display: none;">
+        <div class="data-row">
+            <span class="data-label">X (left/right)</span>
+            <span class="data-value" id="xValue">—</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Y (forward/back)</span>
+            <span class="data-value" id="yValue">—</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Z (up/down)</span>
+            <span class="data-value" id="zValue">—</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Magnitude (g)</span>
+            <span class="data-value" id="magValue">—</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Update rate</span>
+            <span class="data-value" id="rateValue">—</span>
+        </div>
+    </div>
+
+    <div class="graph-container" id="graphContainer" style="display: none;">
+        <div class="graph-title">⚡ Real‑time acceleration (g-force)</div>
+        <div class="bar-group">
+            <div class="bar-item">
+                <div class="bar-label">X</div>
+                <div class="bar-fill" id="barX" style="height: 4px;"></div>
+                <div class="bar-value" id="barXval">0.00</div>
+            </div>
+            <div class="bar-item">
+                <div class="bar-label">Y</div>
+                <div class="bar-fill" id="barY" style="height: 4px;"></div>
+                <div class="bar-value" id="barYval">0.00</div>
+            </div>
+            <div class="bar-item">
+                <div class="bar-label">Z</div>
+                <div class="bar-fill" id="barZ" style="height: 4px;"></div>
+                <div class="bar-value" id="barZval">0.00</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        🧭 Measures acceleration including gravity (g = 9.81 m/s²)<br>
+        • Device must be moved to see changes • Request permission required
+    </div>
+</div>
+
+<script>
+    (function() {
+        // DOM elements
+        const requestBtn = document.getElementById('requestBtn');
+        const ledIndicator = document.getElementById('ledIndicator');
+        const statusMsgSpan = document.getElementById('statusMessage');
+        const messageContainer = document.getElementById('messageContainer');
+        const dataGrid = document.getElementById('dataGrid');
+        const graphContainer = document.getElementById('graphContainer');
+        
+        // data fields
+        const xEl = document.getElementById('xValue');
+        const yEl = document.getElementById('yValue');
+        const zEl = document.getElementById('zValue');
+        const magEl = document.getElementById('magValue');
+        const rateEl = document.getElementById('rateValue');
+        
+        // bar elements
+        const barX = document.getElementById('barX');
+        const barY = document.getElementById('barY');
+        const barZ = document.getElementById('barZ');
+        const barXval = document.getElementById('barXval');
+        const barYval = document.getElementById('barYval');
+        const barZval = document.getElementById('barZval');
+        
+        let deviceOrientationHandler = null;
+        let deviceMotionHandler = null;
+        let permissionState = 'prompt'; // 'prompt', 'granted', 'denied'
+        let lastTimestamp = 0;
+        let updateCount = 0;
+        let frameRequestId = null;
+        let currentAccel = { x: 0, y: 0, z: 0 };
+        
+        // Helper to show error / info messages
+        function showMessage(message, isError = false, isWarning = false) {
+            let className = '';
+            if (isError) className = 'error-message';
+            else if (isWarning) className = 'warning-message';
+            else className = '';
+            messageContainer.innerHTML = `<div class="${className}" style="${!className ? 'background:#e9f0ff; border-left-color:#007aff; color:#0055aa;' : ''}">${message}</div>`;
+            if (!isError && !isWarning) {
+                setTimeout(() => {
+                    if (messageContainer.innerHTML.includes(message)) {
+                        messageContainer.innerHTML = '';
+                    }
+                }, 5000);
+            } else {
+                setTimeout(() => {
+                    if (messageContainer.innerHTML.includes(message)) {
+                        messageContainer.innerHTML = '';
+                    }
+                }, 8000);
+            }
+        }
+        
+        function clearMessages() {
+            messageContainer.innerHTML = '';
+        }
+        
+        // Helper to format acceleration with 3 decimals
+        function formatG(val) {
+            if (val === undefined || val === null) return '—';
+            return val.toFixed(3);
+        }
+        
+        // Compute magnitude sqrt(x^2+y^2+z^2)
+        function computeMagnitude(x, y, z) {
+            return Math.sqrt(x*x + y*y + z*z).toFixed(3);
+        }
+        
+        // Update UI with current acceleration values
+        function updateAccelerometerUI() {
+            if (!currentAccel) return;
+            const x = currentAccel.x;
+            const y = currentAccel.y;
+            const z = currentAccel.z;
+            
+            xEl.textContent = formatG(x) + ' g';
+            yEl.textContent = formatG(y) + ' g';
+            zEl.textContent = formatG(z) + ' g';
+            magEl.textContent = computeMagnitude(x, y, z) + ' g';
+            
+            // Update bar graph: map range -2g .. +2g to 0..80px height (centered at 0 -> 40px)
+            // But we want absolute value for visual? Actually better: show signed as positive/negative? 
+            // For simplicity, show absolute magnitude relative to 0g to 2g, but we will show absolute value but with direction color?
+            // Better: map value from -2 to +2 to height 0 to 80px, where 0g => 40px. But typical visualization: positive values push up, negative down? 
+            // In a simple bar chart, we can map absolute value * 40 (max 2g -> 80px). But more readable: show absolute height based on absolute g-force.
+            // For simplicity and clarity, we'll map absolute value (0 to 2g) linearly to 0-80px, but we also show numeric.
+            const absX = Math.min(Math.abs(x), 2.5);
+            const absY = Math.min(Math.abs(y), 2.5);
+            const absZ = Math.min(Math.abs(z), 2.5);
+            const maxHeight = 80;
+            const heightX = (absX / 2.5) * maxHeight;
+            const heightY = (absY / 2.5) * maxHeight;
+            const heightZ = (absZ / 2.5) * maxHeight;
+            
+            barX.style.height = Math.max(4, heightX) + 'px';
+            barY.style.height = Math.max(4, heightY) + 'px';
+            barZ.style.height = Math.max(4, heightZ) + 'px';
+            
+            barXval.textContent = formatG(x);
+            barYval.textContent = formatG(y);
+            barZval.textContent = formatG(z);
+            
+            // Update rate display (rough frames per second)
+            const now = Date.now();
+            if (lastTimestamp !== 0) {
+                const delta = now - lastTimestamp;
+                if (delta > 0) {
+                    const fps = (1000 / delta).toFixed(0);
+                    rateEl.textContent = fps + ' Hz';
+                }
+            }
+            lastTimestamp = now;
+            updateCount++;
+        }
+        
+        // Animation loop for smooth UI updates
+        function startAnimationLoop() {
+            if (frameRequestId) cancelAnimationFrame(frameRequestId);
+            function animate() {
+                updateAccelerometerUI();
+                frameRequestId = requestAnimationFrame(animate);
+            }
+            frameRequestId = requestAnimationFrame(animate);
+        }
+        
+        function stopAnimationLoop() {
+            if (frameRequestId) {
+                cancelAnimationFrame(frameRequestId);
+                frameRequestId = null;
+            }
+        }
+        
+        // DeviceMotion event handler (raw accelerometer including gravity)
+        function onDeviceMotion(event) {
+            if (!event.accelerationIncludingGravity) return;
+            const accel = event.accelerationIncludingGravity;
+            // iOS typically provides x, y, z in units of g (where 1 g = 9.81 m/s²)
+            let x = accel.x;
+            let y = accel.y;
+            let z = accel.z;
+            // Some devices may provide null values; fallback
+            if (x === null || x === undefined) x = 0;
+            if (y === null || y === undefined) y = 0;
+            if (z === null || z === undefined) z = 0;
+            
+            currentAccel = { x, y, z };
+            
+            // also update LED status if needed
+            if (permissionState === 'granted') {
+                ledIndicator.classList.add('active');
+                statusMsgSpan.textContent = 'Live accelerometer data';
+            }
+        }
+        
+        // Generic fallback for devices that might use DeviceOrientationEvent? but we need motion
+        function registerMotionEvents() {
+            if (window.DeviceMotionEvent) {
+                window.addEventListener('devicemotion', onDeviceMotion);
+                deviceMotionHandler = onDeviceMotion;
+                return true;
+            } else {
+                showMessage('DeviceMotionEvent not supported on this browser', true);
+                return false;
+            }
+        }
+        
+        function unregisterMotionEvents() {
+            if (deviceMotionHandler) {
+                window.removeEventListener('devicemotion', deviceMotionHandler);
+                deviceMotionHandler = null;
+            }
+        }
+        
+        // Reset UI to idle
+        function resetUI() {
+            currentAccel = { x: 0, y: 0, z: 0 };
+            updateAccelerometerUI();
+            xEl.textContent = '—';
+            yEl.textContent = '—';
+            zEl.textContent = '—';
+            magEl.textContent = '—';
+            rateEl.textContent = '—';
+            barX.style.height = '4px';
+            barY.style.height = '4px';
+            barZ.style.height = '4px';
+            barXval.textContent = '0.00';
+            barYval.textContent = '0.00';
+            barZval.textContent = '0.00';
+            ledIndicator.classList.remove('active');
+        }
+        
+        // Request permission on iOS 12.2+ style? On iOS 10.3.3, DeviceMotionEvent doesn't require explicit user permission API?
+        // But modern iOS 13+ requires DeviceMotionEvent.requestPermission(). However on iOS 10.3.3, the API is not mandatory, but we should still implement
+        // a fallback: some old devices still prompt automatically. For consistency we implement both: If requestPermission exists, use it; else directly add listener.
+        // But the requirement: "ask permission and present real time data" — we will implement the standard pattern for iOS (>=12.2) and fallback for older.
+        
+        function requestAccelerometerPermission() {
+            clearMessages();
+            
+            // Check if DeviceMotionEvent is defined
+            if (!window.DeviceMotionEvent) {
+                showMessage('DeviceMotion API not available in this browser.', true);
+                statusMsgSpan.textContent = 'Not supported';
+                return;
+            }
+            
+            // Check for iOS-specific requestPermission method (iOS 13+ and some versions)
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                // iOS requires user gesture to request permission
+                DeviceMotionEvent.requestPermission()
+                    .then(permissionStateResult => {
+                        if (permissionStateResult === 'granted') {
+                            permissionState = 'granted';
+                            enableAccelerometer();
+                        } else {
+                            permissionState = 'denied';
+                            statusMsgSpan.textContent = 'Permission denied';
+                            ledIndicator.classList.remove('active');
+                            showMessage('Permission denied. You can enable motion & orientation in Settings → Safari → Motion & Orientation Access.', true);
+                            if (requestBtn) {
+                                requestBtn.disabled = true;
+                                requestBtn.textContent = '❌ Access Denied';
+                                requestBtn.style.opacity = '0.6';
+                            }
+                            dataGrid.style.display = 'none';
+                            graphContainer.style.display = 'none';
+                        }
+                    })
+                    .catch(err => {
+                        console.warn(err);
+                        permissionState = 'denied';
+                        statusMsgSpan.textContent = 'Permission error';
+                        showMessage('Could not request accelerometer permission: ' + (err.message || err), true);
+                        dataGrid.style.display = 'none';
+                        graphContainer.style.display = 'none';
+                    });
+            } else {
+                // For older iOS 10.3.3, Safari doesn't require explicit permission via requestPermission,
+                // but it will prompt the user automatically when adding devicemotion listener.
+                // However, to respect UX, we need to add the event listener and it will trigger a permission dialog automatically?
+                // Actually on old iOS, there is no special permission prompt; the API just works without asking, but modern privacy requires that we still notify.
+                // For safety, we register events and assume allowed. But to follow "ask permission", we'll show a info and start.
+                // But we also need to respect that user might have disabled motion access in Settings > Safari > Motion & Orientation.
+                // The system will just give zero values or no events. We will handle by showing warning.
+                showMessage('Your iOS version may auto-allow motion sensors. If no data appears, enable "Motion & Orientation Access" in Settings → Safari.', false, true);
+                // Start directly
+                permissionState = 'granted';
+                enableAccelerometer();
+            }
+        }
+        
+        function enableAccelerometer() {
+            // unregister any previous to avoid duplicates
+            unregisterMotionEvents();
+            resetUI();
+            // register devicemotion
+            const success = registerMotionEvents();
+            if (!success) {
+                showMessage('Failed to register motion events.', true);
+                statusMsgSpan.textContent = 'Error';
+                return;
+            }
+            // show data & graph containers
+            dataGrid.style.display = 'block';
+            graphContainer.style.display = 'block';
+            statusMsgSpan.textContent = 'Receiving accelerometer data';
+            ledIndicator.classList.add('active');
+            
+            // start animation loop for smooth UI
+            startAnimationLoop();
+            
+            // update button state
+            if (requestBtn) {
+                requestBtn.textContent = '✅ Active · Streaming data';
+                requestBtn.disabled = true;
+                requestBtn.style.opacity = '0.7';
+            }
+            
+            // Also send a test message
+            showMessage('Accelerometer active — move your iPad to see real-time changes (X, Y, Z).', false);
+        }
+        
+        // stop everything
+        function disableAccelerometer() {
+            unregisterMotionEvents();
+            stopAnimationLoop();
+            if (dataGrid) dataGrid.style.display = 'none';
+            if (graphContainer) graphContainer.style.display = 'none';
+            ledIndicator.classList.remove('active');
+            statusMsgSpan.textContent = 'Accelerometer off';
+            resetUI();
+        }
+        
+        // Button click handler
+        if (requestBtn) {
+            requestBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                // If already granted and active, do nothing or re-init? but better avoid re-request
+                if (permissionState === 'granted') {
+                    showMessage('Already receiving accelerometer data. Reload page if you want to reset.', false, true);
+                    return;
+                }
+                if (permissionState === 'denied') {
+                    showMessage('Permission previously denied. Enable in Settings → Safari → Motion & Orientation Access, then reload page.', true);
+                    return;
+                }
+                requestAccelerometerPermission();
+            });
+        }
+        
+        // Gracefully cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            unregisterMotionEvents();
+            stopAnimationLoop();
+        });
+        
+        // initialize UI: hide data panels, show request prompt
+        dataGrid.style.display = 'none';
+        graphContainer.style.display = 'none';
+        resetUI();
+        statusMsgSpan.textContent = 'Tap to request access';
+        
+        // optional: add orientation note for iPad specific axes
+        console.log('iPad Accelerometer ready. For iOS 10.3.3, if permission is not requested via button, use fallback.');
+    })();
+</script>
+</body>
+</html>
