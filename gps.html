@@ -1,140 +1,590 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>iPad GPS Speed & Position</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>GPS Real-Time Data | iOS 10.3.3</title>
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: #eee;
-            text-align: center;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, 'Helvetica Neue', Helvetica, 'Segoe UI', sans-serif;
+            background: #f2f2f2;
+            padding: 20px;
+            color: #1c1c1e;
         }
 
         .container {
-            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+            overflow: hidden;
+            padding: 24px 20px 32px;
+            transition: all 0.2s ease;
         }
 
-        .value {
-            font-size: 2em;
-            margin: 10px 0;
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            margin-bottom: 8px;
+            color: #000;
         }
 
-        .label {
-            font-size: 0.9em;
-            color: #aaa;
+        .sub {
+            font-size: 0.85rem;
+            color: #8e8e93;
+            border-bottom: 1px solid #e5e5ea;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
         }
 
-        .error {
-            color: #ff6666;
-            margin-top: 15px;
+        .status-card {
+            background: #f8f9fc;
+            border-radius: 20px;
+            padding: 18px 16px;
+            margin-bottom: 24px;
+            border: 1px solid #e9e9ef;
         }
 
-        .status {
-            margin-top: 10px;
-            font-size: 0.9em;
-            color: #ccc;
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .led {
+            width: 12px;
+            height: 12px;
+            border-radius: 12px;
+            background-color: #ff3b30;
+            box-shadow: 0 0 2px rgba(0,0,0,0.2);
+        }
+
+        .led.active {
+            background-color: #34c759;
+            box-shadow: 0 0 6px #34c75980;
+        }
+
+        .status-text {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .permission-btn {
+            background-color: #007aff;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 44px;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: inherit;
+        }
+
+        .permission-btn:active {
+            background-color: #005fc1;
+            transform: scale(0.97);
+        }
+
+        .data-grid {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e9e9ef;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 14px 16px;
+            border-bottom: 1px solid #efeff4;
+        }
+
+        .data-row:last-child {
+            border-bottom: none;
+        }
+
+        .data-label {
+            font-size: 0.9rem;
+            color: #6c6c70;
+            font-weight: 500;
+        }
+
+        .data-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            font-family: 'SF Mono', 'Courier New', monospace;
+            color: #1c1c1e;
+            word-break: break-word;
+            text-align: right;
+            max-width: 60%;
+        }
+
+        .accuracy-badge {
+            background: #e9e9ef;
+            border-radius: 40px;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #3a3a3e;
+            display: inline-block;
+        }
+
+        .footer-note {
+            font-size: 0.7rem;
+            color: #8e8e93;
+            text-align: center;
+            margin-top: 24px;
+            border-top: 1px solid #efeff4;
+            padding-top: 18px;
+        }
+
+        .error-message {
+            background: #ffe9e6;
+            border-left: 4px solid #ff3b30;
+            padding: 12px 14px;
+            border-radius: 14px;
+            margin: 16px 0;
+            font-size: 0.85rem;
+            color: #b33;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            transform: none;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px 16px;
+            }
+            .data-value {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>GPS Speed & Position</h1>
+<div class="container" id="app">
+    <h1>📍 GPS Live</h1>
+    <div class="sub">Real‑time position · iOS 10.3.3 compatible</div>
 
-    <div>
-        <div class="label">Speed</div>
-        <div id="speed" class="value">-- km/h</div>
+    <div class="status-card" id="statusCard">
+        <div class="status-indicator">
+            <div class="led" id="ledIndicator"></div>
+            <span class="status-text" id="statusMessage">GPS not started</span>
+        </div>
+        <div id="permissionArea">
+            <button class="permission-btn" id="requestBtn">📡 Request GPS Access</button>
+        </div>
+        <div id="errorContainer"></div>
     </div>
 
-    <div>
-        <div class="label">Latitude</div>
-        <div id="lat" class="value">--</div>
+    <div class="data-grid" id="dataGrid" style="display: none;">
+        <div class="data-row">
+            <span class="data-label">Latitude</span>
+            <span class="data-value" id="latValue">—</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Longitude</span>
+            <span class="data-value" id="lngValue">—</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Accuracy (m)</span>
+            <span class="data-value" id="accValue">—</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Altitude</span>
+            <span class="data-value" id="altValue">—</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Speed (km/h)</span>
+            <span class="data-value" id="speedValue">—</span>
+        </div>
+        <div class="data-row">
+            <span class="data-label">Timestamp</span>
+            <span class="data-value" id="timeValue">—</span>
+        </div>
     </div>
-
-    <div>
-        <div class="label">Longitude</div>
-        <div id="lon" class="value">--</div>
+    <div class="footer-note">
+        🌍 Real‑time updates • Uses WGS84 • Requires location permission
     </div>
-
-    <div class="status" id="status">Waiting for GPS...</div>
-    <div class="error" id="error"></div>
 </div>
 
-<script type="text/javascript">
-    // Update UI helpers
-    function setText(id, text) {
-        var el = document.getElementById(id);
-        if (el) {
-            el.innerHTML = text;
-        }
-    }
+<script>
+    (function() {
+        // DOM elements
+        const requestBtn = document.getElementById('requestBtn');
+        const ledIndicator = document.getElementById('ledIndicator');
+        const statusMsgSpan = document.getElementById('statusMessage');
+        const errorContainer = document.getElementById('errorContainer');
+        const dataGrid = document.getElementById('dataGrid');
+        
+        // data fields
+        const latEl = document.getElementById('latValue');
+        const lngEl = document.getElementById('lngValue');
+        const accEl = document.getElementById('accValue');
+        const altEl = document.getElementById('altValue');
+        const speedEl = document.getElementById('speedValue');
+        const timeEl = document.getElementById('timeValue');
 
-    // Convert m/s to km/h safely
-    function speedToKmh(speedMs) {
-        if (speedMs === null || typeof speedMs === "undefined") {
-            return 0;
-        }
-        return speedMs * 3.6;
-    }
-
-    // Called whenever we get a GPS update
-    function handlePosition(position) {
-        setText("status", "GPS signal OK");
-
-        var coords = position.coords;
-
-        // Position
-        setText("lat", coords.latitude.toFixed(6));
-        setText("lon", coords.longitude.toFixed(6));
-
-        // Speed (m/s -> km/h)
-        var speedMs = coords.speed; // may be null
-        var kmh = speedToKmh(speedMs);
-        setText("speed", kmh.toFixed(1) + " km/h");
-    }
-
-    // Called on GPS error
-    function handleError(error) {
-        var msg = "Unknown error";
-        if (error && typeof error.code !== "undefined") {
-            if (error.code === error.PERMISSION_DENIED) {
-                msg = "Permission denied. Enable location services for this page.";
-            } else if (error.code === error.POSITION_UNAVAILABLE) {
-                msg = "Position unavailable.";
-            } else if (error.code === error.TIMEOUT) {
-                msg = "GPS timeout.";
+        let watchId = null;           // geolocation watch ID
+        let currentPermissionState = 'prompt'; // 'prompt', 'granted', 'denied'
+        
+        // Helper to clear any existing watch
+        function stopWatching() {
+            if (watchId !== null && navigator.geolocation) {
+                navigator.geolocation.clearWatch(watchId);
+                watchId = null;
             }
         }
-        setText("status", "GPS error");
-        setText("error", msg);
-    }
-
-    function startGps() {
-        if (!navigator.geolocation) {
-            setText("status", "Geolocation not supported on this device.");
-            return;
+        
+        // Update UI for "no data" or idle
+        function resetDataDisplay() {
+            latEl.textContent = '—';
+            lngEl.textContent = '—';
+            accEl.textContent = '—';
+            altEl.textContent = '—';
+            speedEl.textContent = '—';
+            timeEl.textContent = '—';
         }
-
-        setText("status", "Requesting GPS...");
-
-        // Continuous updates
-        navigator.geolocation.watchPosition(
-            handlePosition,
-            handleError,
-            {
-                enableHighAccuracy: true,
-                maximumAge: 0,
-                timeout: 15000
+        
+        // Display error in error container
+        function showError(message, isUserAction = false) {
+            errorContainer.innerHTML = `<div class="error-message">⚠️ ${message}</div>`;
+            if (!isUserAction) {
+                // if error appears without button click, also update status
+                statusMsgSpan.textContent = 'Error';
+                ledIndicator.classList.remove('active');
             }
-        );
-    }
-
-    // Start when page loads
-    (function () {
-        startGps();
+            // Auto clear after 6 sec (but keep visible for user)
+            setTimeout(() => {
+                if (errorContainer.innerHTML.includes(message)) {
+                    errorContainer.innerHTML = '';
+                }
+            }, 8000);
+        }
+        
+        function clearErrors() {
+            errorContainer.innerHTML = '';
+        }
+        
+        // Format timestamp nicely
+        function formatTimestamp(timestamp) {
+            if (!timestamp) return '—';
+            try {
+                const date = new Date(timestamp);
+                return date.toLocaleTimeString([], { hour: '2-digit', minute:'2-digit', second:'2-digit' }) + 
+                       '.' + String(date.getMilliseconds()).padStart(3,'0').slice(0,2);
+            } catch(e) {
+                return String(timestamp);
+            }
+        }
+        
+        // Convert m/s to km/h
+        function msToKmh(ms) {
+            if (ms === null || ms === undefined || isNaN(ms)) return '—';
+            let kmh = ms * 3.6;
+            if (kmh < 0.1) return '0.0';
+            return kmh.toFixed(1);
+        }
+        
+        // Update UI with fresh GeolocationPosition
+        function updatePositionUI(position) {
+            if (!position) return;
+            
+            const coords = position.coords;
+            const timestamp = position.timestamp;
+            
+            // latitude & longitude
+            if (coords.latitude !== undefined && coords.latitude !== null) {
+                latEl.textContent = coords.latitude.toFixed(6);
+            } else {
+                latEl.textContent = '—';
+            }
+            
+            if (coords.longitude !== undefined && coords.longitude !== null) {
+                lngEl.textContent = coords.longitude.toFixed(6);
+            } else {
+                lngEl.textContent = '—';
+            }
+            
+            // Accuracy (meters)
+            if (coords.accuracy !== undefined && coords.accuracy !== null) {
+                let acc = coords.accuracy;
+                accEl.textContent = (acc < 1 ? acc.toFixed(1) : Math.round(acc)) + ' m';
+            } else {
+                accEl.textContent = '—';
+            }
+            
+            // Altitude (meters above sea level)
+            if (coords.altitude !== undefined && coords.altitude !== null) {
+                altEl.textContent = coords.altitude.toFixed(1) + ' m';
+            } else {
+                altEl.textContent = '—';
+            }
+            
+            // Speed (km/h)
+            if (coords.speed !== undefined && coords.speed !== null && !isNaN(coords.speed)) {
+                let speedKmh = msToKmh(coords.speed);
+                speedEl.textContent = speedKmh;
+            } else {
+                speedEl.textContent = '—';
+            }
+            
+            // Timestamp
+            timeEl.textContent = formatTimestamp(timestamp);
+            
+            // Update status and LED to active
+            statusMsgSpan.textContent = 'Receiving live data';
+            ledIndicator.classList.add('active');
+        }
+        
+        // Success callback for watchPosition
+        function onLocationSuccess(position) {
+            clearErrors();
+            // ensure grid visible
+            if (dataGrid.style.display === 'none') {
+                dataGrid.style.display = 'block';
+            }
+            updatePositionUI(position);
+            // Keep status active and positive
+            if (currentPermissionState === 'granted') {
+                statusMsgSpan.textContent = 'Live updates active';
+                ledIndicator.classList.add('active');
+            }
+        }
+        
+        // Error callback for geolocation
+        function onLocationError(error) {
+            let errorMsg = '';
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMsg = 'Permission denied. Please allow location access in Settings → Privacy → Location Services.';
+                    currentPermissionState = 'denied';
+                    statusMsgSpan.textContent = 'Access denied';
+                    ledIndicator.classList.remove('active');
+                    stopWatching();
+                    // show request button again? Actually we keep button but disable style? we allow re-request but likely denied permanently.
+                    // On iOS, once denied, user must go to Settings. We'll display helpful message and keep button disabled functionally.
+                    if (requestBtn) {
+                        requestBtn.disabled = true;
+                        requestBtn.style.opacity = '0.5';
+                        requestBtn.textContent = '⚠️ Permission denied · Open Settings';
+                        // Provide extra hint
+                    }
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMsg = 'Position unavailable (weak signal or no GPS).';
+                    break;
+                case error.TIMEOUT:
+                    errorMsg = 'Location request timed out. Try again in better conditions.';
+                    break;
+                default:
+                    errorMsg = 'Unknown geolocation error.';
+            }
+            showError(errorMsg);
+            // if not denied keep status as warning but still show grid maybe
+            if (error.code !== error.PERMISSION_DENIED) {
+                statusMsgSpan.textContent = 'Waiting for signal...';
+                ledIndicator.classList.remove('active');
+            } else {
+                statusMsgSpan.textContent = 'Permission denied';
+                ledIndicator.classList.remove('active');
+                dataGrid.style.display = 'none';
+            }
+        }
+        
+        // Options for better realtime on iOS 10.3.3: high accuracy, reasonable timeout
+        const geoOptions = {
+            enableHighAccuracy: true,      // Use GPS if available (iPad)
+            timeout: 15000,                // 15 sec before timeout
+            maximumAge: 0                  // Force fresh reading (real-time)
+        };
+        
+        // Start watching position after permission is granted
+        function startGeolocationWatch() {
+            if (!navigator.geolocation) {
+                showError('Geolocation not supported on this browser/iPad. iOS 10.3.3 Safari supports it though.');
+                statusMsgSpan.textContent = 'Not supported';
+                ledIndicator.classList.remove('active');
+                return false;
+            }
+            
+            // Clear previous watch if any
+            stopWatching();
+            
+            // Reset data display while acquiring
+            resetDataDisplay();
+            dataGrid.style.display = 'block';
+            statusMsgSpan.textContent = 'Requesting GPS fix...';
+            ledIndicator.classList.remove('active');
+            clearErrors();
+            
+            try {
+                watchId = navigator.geolocation.watchPosition(
+                    onLocationSuccess,
+                    onLocationError,
+                    geoOptions
+                );
+                return true;
+            } catch (err) {
+                showError('Exception: ' + err.message);
+                return false;
+            }
+        }
+        
+        // Request permission explicitly using the button (triggers browser prompt)
+        function requestPermissionAndStart() {
+            clearErrors();
+            
+            if (!navigator.geolocation) {
+                showError('Geolocation API missing. Update Safari?');
+                return;
+            }
+            
+            // In iOS 10.3.3, calling getCurrentPosition or watchPosition triggers permission prompt.
+            // We use watchPosition directly to get both permission and streaming.
+            // But first ensure we are not already watching.
+            stopWatching();
+            
+            // Reset UI state
+            statusMsgSpan.textContent = 'Requesting location access...';
+            ledIndicator.classList.remove('active');
+            dataGrid.style.display = 'block';
+            resetDataDisplay();
+            
+            // Use watchPosition: this will cause browser to ask for permission.
+            // If user grants, onLocationSuccess will start receiving updates.
+            // If denied, onLocationError will handle.
+            try {
+                watchId = navigator.geolocation.watchPosition(
+                    function firstSuccess(position) {
+                        // permission granted!
+                        currentPermissionState = 'granted';
+                        // Update button state: change text to "GPS Active"
+                        if (requestBtn) {
+                            requestBtn.textContent = '🟢 GPS Active · Updating';
+                            requestBtn.disabled = true;
+                            requestBtn.style.opacity = '0.7';
+                        }
+                        // display initial data
+                        onLocationSuccess(position);
+                        // The watch continues automatically
+                    },
+                    function firstError(error) {
+                        // if permission denied or error
+                        if (error.code === error.PERMISSION_DENIED) {
+                            currentPermissionState = 'denied';
+                            statusMsgSpan.textContent = 'Access denied';
+                            ledIndicator.classList.remove('active');
+                            dataGrid.style.display = 'none';
+                            if (requestBtn) {
+                                requestBtn.textContent = '❌ Permission Denied';
+                                requestBtn.disabled = true;
+                                requestBtn.style.opacity = '0.6';
+                            }
+                            showError('Location permission denied. Please enable in Settings → Privacy → Location Services for Safari.', true);
+                        } else {
+                            // other errors
+                            onLocationError(error);
+                            if (requestBtn) {
+                                requestBtn.textContent = '📡 Retry GPS Access';
+                                requestBtn.disabled = false;
+                            }
+                        }
+                        // ensure watch is cleared if error on start
+                        if (watchId !== null) {
+                            navigator.geolocation.clearWatch(watchId);
+                            watchId = null;
+                        }
+                    },
+                    geoOptions
+                );
+            } catch (e) {
+                showError('Unexpected error: ' + e.message);
+                statusMsgSpan.textContent = 'Error';
+                if (requestBtn) {
+                    requestBtn.disabled = false;
+                    requestBtn.textContent = '📡 Request GPS Access';
+                }
+            }
+        }
+        
+        // Edge case: if the user previously granted permission, we could try to auto-start but 
+        // to respect user privacy and avoid repetitive prompts, we let button be the primary.
+        // However, if the page reloads and permission was already granted, iOS 10.3.3 still might not auto-start.
+        // We provide a smarter check: we can attempt a one-time getCurrentPosition to detect if permission is already granted.
+        // If it's already granted, we can start watch without new user click (improves UX). But we must not prompt on load.
+        function detectExistingPermissionAndStart() {
+            if (!navigator.geolocation) return;
+            
+            // Use a fast getCurrentPosition with a short timeout to test permission state.
+            // This won't prompt if permission already decided (granted or denied). In iOS Safari, calling getCurrentPosition 
+            // when already granted returns position; if denied calls error. If undecided, it triggers prompt which we want to avoid at load.
+            // So we rely on a silent approach: we assume not granted until user clicks. However, to provide automatic start on revisit,
+            // we can check via a 'permissions' API? Permissions API is not fully supported on iOS 10.3.3. So we do safe approach:
+            // We attempt a getCurrentPosition with timeout 1ms? That may cause prompt. Better to keep manual button.
+            // Given the requirement: "ask permission to access iPad's GPS sensor" – explicit user gesture is required.
+            // So we avoid auto requests on page load. User must tap button for compliance with iOS security.
+            // That's the safest to avoid unexpected prompts. Perfect.
+        }
+        
+        // Button click event binding
+        if (requestBtn) {
+            requestBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // If already watching, we can optionally reinitialize? but better restart fresh
+                if (watchId !== null) {
+                    // user wants to restart or re-request? but permission likely granted, but we can restart anyway
+                    stopWatching();
+                    resetDataDisplay();
+                }
+                // Reset button appearance if previously disabled due to denial (if denied, button disabled, but user might fix settings, they need refresh)
+                if (currentPermissionState === 'denied') {
+                    // Provide info: user must change settings and reload page
+                    showError('Location previously denied. To enable, go to iPad Settings → Privacy → Location Services → Safari → Allow. Then refresh this page.', true);
+                    return;
+                }
+                requestPermissionAndStart();
+            });
+        }
+        
+        // On page unload, clear watch
+        window.addEventListener('beforeunload', function() {
+            if (watchId !== null && navigator.geolocation) {
+                navigator.geolocation.clearWatch(watchId);
+            }
+        });
+        
+        // Initialize: display clean UI, no automatic request, just show button.
+        // Ensure grid hidden initially until first fix
+        dataGrid.style.display = 'none';
+        statusMsgSpan.textContent = 'Tap "Request GPS Access"';
+        ledIndicator.classList.remove('active');
+        resetDataDisplay();
+        
+        // Optional: If there is any saved permission from earlier session (iOS may remember), but button press will re-engage.
+        // For better UX, we can also try to detect but not prompt. We'll keep manual.
+        // Additional: iOS 10.3.3 supports ES6 (let, const, arrow functions, promises partially, but we use callbacks for safety)
+        // All features used are ES5/ES6 compatible. 'const' and 'let' are fine in iOS 10 Safari.
+        console.log('GPS realtime page ready for iOS 10.3.3');
     })();
 </script>
 </body>
